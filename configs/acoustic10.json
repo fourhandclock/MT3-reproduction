@@ -1,0 +1,49 @@
+{
+  "seed": 42,
+  "model_config": "configs/streaming.json",
+  "total_optimizer_update_cap": 500,
+  "sanity": {
+    "optimizer_updates": 100,
+    "blocks": 5,
+    "crop_seconds": 2.0,
+    "train_entry_indices": [0, 1],
+    "crop_starts_seconds": [2.0, 6.0],
+    "dropout": 0.0,
+    "gain_augmentation": false,
+    "minimum_active_frames": 100,
+    "minimum_distinct_frets": 4,
+    "maximum_state_loss_ratio": 0.5,
+    "minimum_active_fret_accuracy": 0.8,
+    "minimum_exact_state_f1": 0.75
+  },
+  "arms": [
+    {"name": "baseline", "target_delay_frames": 0},
+    {"name": "delay60", "target_delay_frames": 6}
+  ],
+  "training": {
+    "epochs": 5,
+    "max_steps": 200,
+    "samples_per_epoch": 160,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 8,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "common_leading_mask_frames": 6,
+  "decoder_parameters": {
+    "onset_threshold": 0.55,
+    "activity_threshold": 0.35,
+    "onset_backdate_seconds": 0.06
+  },
+  "validation_packet_ms": 20,
+  "selection_rule": "Final step-200 mean validation exact-state frame F1 against aligned targets, then original-source note onset F1; baseline wins exact ties.",
+  "test_inference_allowed": false,
+  "production_promotion": false
+}

@@ -1,0 +1,15 @@
+{
+  "beat_checkpoint": "models/beat_this/small0.ckpt",
+  "input_seconds": 12.0,
+  "score_seconds": 10.0,
+  "beat_tolerance_seconds": 0.07,
+  "divisions": 12,
+  "subdivisions": [4, 3],
+  "triplet_penalty": 0.002,
+  "large_shift_seconds": 0.08,
+  "chord_context_beats": 2,
+  "chord_vocabulary": ["maj", "min", "7", "maj7", "min7"],
+  "chord_change_penalty": 0.15,
+  "chord_minimum_duration": 0.03,
+  "tuning_midi": [40, 45, 50, 55, 59, 64]
+}

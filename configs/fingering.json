@@ -1,0 +1,20 @@
+{
+  "tuning_midi": [40, 45, 50, 55, 59, 64],
+  "capo": 0,
+  "max_physical_fret": 24,
+  "max_fret_span": 5,
+  "max_finger_groups": 4,
+  "beam_width": 32,
+  "partial_beam_width": 64,
+  "release_tolerance_seconds": 0.000001,
+  "movement_weight": 0.2,
+  "fast_shift_weight": 0.015,
+  "span_weight": 0.1,
+  "finger_weight": 0.05,
+  "fret_weight": 0.02,
+  "open_string_bonus": 0.05,
+  "acoustic_weights": [0.0, 0.5, 1.0, 2.0],
+  "acoustic_frame_rate": 100.0,
+  "input_seconds": 12.0,
+  "score_seconds": 10.0
+}

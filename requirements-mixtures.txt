@@ -1,0 +1,14 @@
+# Install after scripts/setup.ps1. Keep the existing torch/audio/array versions.
+torch==2.7.1
+torchaudio==2.7.1
+numpy==1.26.4
+einops==0.8.1
+demucs==4.0.1
+dora-search==0.1.13
+julius==0.2.8
+lameenc==1.8.4
+omegaconf==2.4.0
+openunmix==1.3.0
+retrying==1.4.2
+submitit==1.5.4
+treetable==0.2.6

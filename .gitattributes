@@ -1,0 +1,3 @@
+# Frozen experiment producers are bound to their exact SHA256 bytes.
+# Preserve existing LF/CRLF bytes when staging and checking out on any platform.
+* -text

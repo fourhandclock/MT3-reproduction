@@ -1,0 +1,26 @@
+{
+  "seed": 42,
+  "sample_rate": 16000,
+  "input_seconds": 12.0,
+  "score_seconds": 10.0,
+  "guitar_to_accompaniment_db": [6, 0, -6],
+  "separator": {
+    "name": "htdemucs_6s",
+    "checkpoint": "models/demucs/5c90dfd2-34c22ccb.th",
+    "shifts": 0,
+    "overlap": 0.25,
+    "split": true,
+    "segment": null,
+    "num_workers": 0,
+    "precision": "float32"
+  },
+  "cpu_threads": 4,
+  "training_epochs": 0,
+  "optimizer_updates": 0,
+  "conditions": [
+    "clean", "separated_clean", "accompaniment_only",
+    "target_+6", "mixture_+6", "separated_+6",
+    "target_0", "mixture_0", "separated_0",
+    "target_-6", "mixture_-6", "separated_-6"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "seed": 42,
+  "torch_continuation_seed": 43,
+  "data_epoch_start": 5,
+  "total_optimizer_update_cap": 500,
+  "planned_new_optimizer_updates": 500,
+  "arms": [
+    {"name": "group8", "cnn_norm_groups": 8, "parent_checkpoint": "outputs/spectral11/models/short128/final.pt"},
+    {"name": "group1", "cnn_norm_groups": 1, "parent_checkpoint": "outputs/normalization12/models/group1/final.pt"}
+  ],
+  "common_target_delay_frames": 13,
+  "common_leading_mask_frames": 26,
+  "training": {
+    "epochs": 5,
+    "max_steps": 250,
+    "samples_per_epoch": 200,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 26,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "continuation_learning_rate_rule": "Hold each parent's stored final AdamW learning rate at 0.0001; no scheduler restart.",
+  "amp_scaler_reset": {"initial_scale": 1024},
+  "decoder_parameters": {"onset_threshold": 0.55, "activity_threshold": 0.35, "onset_backdate_seconds": 0.06},
+  "validation_packet_ms": 20,
+  "pitch_diagnostics": {"threshold": 0.5, "low_register_midi": [40, 51]},
+  "selection_rule": "Fixed lifetime-step500 final models only: mean validation exact-state frame F1, then original-source note onset F1; group8_500 wins exact ties. Step250 parents are dose references only.",
+  "sanity_reference": "outputs/acoustic10/sanity.json",
+  "test_inference_allowed": false,
+  "production_promotion": false
+}

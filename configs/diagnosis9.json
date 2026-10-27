@@ -1,0 +1,20 @@
+{
+  "checkpoint_root": "outputs/streaming",
+  "input_seconds": 12.0,
+  "score_seconds": 10.0,
+  "packet_ms": 20,
+  "optimizer_updates": 0,
+  "selection_split": "validation",
+  "reused_test_set": true,
+  "baseline_parameters": {
+    "onset_threshold": 0.55,
+    "activity_threshold": 0.35,
+    "onset_backdate_seconds": 0.06
+  },
+  "decoder_grid": {
+    "state_alpha": [1.0, 0.5, 0.25],
+    "confirm_frames": [4, 2],
+    "onset_backdate_seconds": [0.06, 0.0, 0.12]
+  },
+  "selection_rule": "Mean validation onset F1, then onset+offset F1. Identity configuration appears first and wins exact ties. No test-based tuning."
+}

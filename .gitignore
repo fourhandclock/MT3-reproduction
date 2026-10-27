@@ -1,0 +1,23 @@
+.venv/
+.venv-tf-check/
+.cache/
+third_party/
+data/
+models/
+outputs/
+tmp/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Local credentials and operating-system metadata.
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.pfx
+.aws/
+.DS_Store
+Thumbs.db

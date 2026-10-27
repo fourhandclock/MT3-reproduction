@@ -1,0 +1,19 @@
+{
+  "stage": 15,
+  "source_root": "outputs/decoder14",
+  "models": ["group8_500", "group1_500"],
+  "source_delay_frames": 13,
+  "source_frames": 1000,
+  "leading_mask_frames": 26,
+  "auxiliary_pitch_threshold": 0.5,
+  "nearby_onset_seconds": 0.2,
+  "fragment_minimum_overlap_seconds": 0.02,
+  "repeated_note_gap_seconds": 0.06,
+  "interventions": ["predicted", "oracle_state", "oracle_onset", "oracle_both"],
+  "new_optimizer_updates": 0,
+  "neural_inference_calls": 0,
+  "test_inference_allowed": false,
+  "production_promotion": false,
+  "next_intervention_rule": "Recommend direct state-to-pitch auxiliary supervision only if replacing state helps onset F1 more than replacing onset in both models, and the separate pitch head beats the state-derived pitch union in both models. Otherwise retain the diagnosis without claiming support for that intervention.",
+  "proposed_state_pitch_loss_weight": 0.5
+}

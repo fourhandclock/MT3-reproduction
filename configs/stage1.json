@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "excerpt_count": 12,
+  "progression": 3,
+  "clip_seconds": 12.0,
+  "score_seconds": 10.0,
+  "frame_rate": 62.5,
+  "onset_tolerance_seconds": 0.05,
+  "offset_tolerance_seconds": 0.05,
+  "offset_ratio": 0.2,
+  "cpu_threads": 4,
+  "mt3_auto_filter": false,
+  "selection_role": "diagnostic subset of MT3's progression-3 validation convention; not a new unseen-data claim",
+  "future_training_budget": {
+    "status": "planned; stage 1 performs no training",
+    "initial_epochs": 5,
+    "max_steps": 500,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "early_stopping_patience": 2,
+    "num_workers": 0
+  }
+}
+

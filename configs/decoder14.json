@@ -1,0 +1,18 @@
+{
+  "stage": 14,
+  "source_root": "outputs/optimization13",
+  "models": ["group8_500", "group1_500"],
+  "source_delay_frames": 13,
+  "packet_ms": 20,
+  "baseline": {"onset_threshold": 0.55, "activity_threshold": 0.35, "onset_backdate_seconds": 0.06},
+  "grid": {
+    "onset_threshold": [0.55, 0.4, 0.7],
+    "activity_threshold": [0.35, 0.25, 0.5],
+    "onset_backdate_seconds": [0.06, 0.0, 0.03]
+  },
+  "selection_rule": "Per frozen model: macro validation onset F1, then onset-plus-offset F1; earliest candidate wins exact ties. Candidate 0 is the unchanged decoder.",
+  "new_optimizer_updates": 0,
+  "neural_inference_calls": 0,
+  "test_inference_allowed": false,
+  "production_promotion": false
+}

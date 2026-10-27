@@ -1,0 +1,18 @@
+{
+  "stage": 17, "seed": 42, "data_epoch_start": 0,
+  "total_optimizer_update_cap": 500,
+  "arms": [{"name":"short_short","windows":[2048,2048]}, {"name":"short_long","windows":[2048,4096]}],
+  "common_target_delay_frames": 13, "common_leading_mask_frames": 26,
+  "training": {
+    "epochs":5,"max_steps":250,"samples_per_epoch":200,"batch_size":4,"crop_seconds":2.0,
+    "edge_mask_frames":26,"learning_rate":0.001,"weight_decay":0.0001,"gradient_clip":1.0,
+    "num_workers":0,"cpu_threads":4,"mixed_precision":true,"inactive_class_weight":0.35,
+    "gain_augmentation_log_std":0.15
+  },
+  "decoder_parameters":{"onset_threshold":0.7,"activity_threshold":0.25,"onset_backdate_seconds":0.0},
+  "validation_packet_ms":20,
+  "pitch_diagnostics":{"threshold":0.5,"low_register_midi":[40,51]},
+  "sanity_reference":"outputs/acoustic10/sanity.json",
+  "selection_rule":"Final step-250 mean validation exact-state frame F1, then original-source note onset F1; short_short wins exact ties.",
+  "test_inference_allowed":false,"production_promotion":false
+}

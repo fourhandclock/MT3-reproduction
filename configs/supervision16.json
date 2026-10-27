@@ -1,0 +1,25 @@
+{
+  "stage": 16,
+  "seed": 42,
+  "data_epoch_start": 10,
+  "parent_checkpoint": "outputs/optimization13/models/group8/final.pt",
+  "parent_checkpoint_sha256": "964ba2cc85422dee6b74bd6e0470ed323b16ec7e36c084c87caf935223f22c0b",
+  "total_optimizer_update_cap": 500,
+  "arms": [{"name": "control", "state_pitch_coefficient": 0.0}, {"name": "state_pitch", "state_pitch_coefficient": 0.5}],
+  "common_target_delay_frames": 13,
+  "common_leading_mask_frames": 26,
+  "training": {
+    "epochs": 5, "max_steps": 250, "samples_per_epoch": 200, "batch_size": 4,
+    "crop_seconds": 2.0, "edge_mask_frames": 26, "learning_rate": 0.0001,
+    "weight_decay": 0.0001, "gradient_clip": 1.0, "num_workers": 0,
+    "cpu_threads": 4, "mixed_precision": true, "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "decoder_parameters": {"onset_threshold": 0.7, "activity_threshold": 0.25, "onset_backdate_seconds": 0.0},
+  "validation_packet_ms": 20,
+  "pitch_diagnostics": {"threshold": 0.5, "low_register_midi": [40, 51]},
+  "selection_rule": "Fixed final750 candidates only: mean common-source exact string/fret frame F1, then original-source note onset F1; original-loss control wins exact ties. Parent500 is a reference only.",
+  "sanity_reference": "outputs/acoustic10/sanity.json",
+  "test_inference_allowed": false,
+  "production_promotion": false
+}

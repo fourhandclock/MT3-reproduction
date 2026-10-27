@@ -1,0 +1,15 @@
+{
+  "stage":18,
+  "source_root":"outputs/multires17",
+  "models":["short_short","short_long"],
+  "source_delay_frames":13,"source_frames":1000,"leading_mask_frames":26,
+  "input_frames":1200,"input_seconds":12.0,
+  "packet_ms":20,
+  "decoder_parameters":{"onset_threshold":0.7,"activity_threshold":0.25,"onset_backdate_seconds":0.0},
+  "auxiliary_pitch_threshold":0.5,
+  "nearby_onset_seconds":0.2,"fragment_minimum_overlap_seconds":0.02,"repeated_note_gap_seconds":0.06,
+  "new_optimizer_updates":0,"neural_inference_calls":0,
+  "calibration_search_allowed":false,"test_inference_allowed":false,"production_promotion":false,
+  "comparison_rule":"Describe all four fixed state/onset combinations; reproduce both original combinations first. No model or threshold selection.",
+  "clock_rule":"Estimated source and packet availability only. Do not transfer measured completion times from the original models to crossed-head replay."
+}

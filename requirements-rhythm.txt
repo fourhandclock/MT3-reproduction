@@ -1,0 +1,5 @@
+# Install after scripts/setup.ps1; inference only, no training framework needed.
+beat-this==1.1.0
+rotary-embedding-torch==0.8.9
+# Only needed for official MusicXML schema validation.
+lxml==6.0.2

@@ -1,0 +1,10 @@
+[project]
+name = "guitar-mt3-baseline"
+version = "0.1.0"
+description = "Small, reproducible pretrained guitar transcription evaluation"
+requires-python = ">=3.10,<3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--basetemp=tmp/pytest-stage1"

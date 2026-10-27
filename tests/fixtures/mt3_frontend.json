@@ -1,0 +1,16 @@
+{
+  "official_source_url": "https://raw.githubusercontent.com/magenta/mt3/462db32a567e6bdcefcee7acb1ec36b011f89e9e/mt3/spectral_ops.py",
+  "official_source_sha256": "80642af5a8903318a11dc18f274b122f8d69ba9b78f5f55926cf61ca98b0a588",
+  "tensorflow": "2.15.1",
+  "numpy": "1.26.4",
+  "cpu_threads": 4,
+  "configuration": {
+    "sample_rate": 16000,
+    "fft_size": 2048,
+    "hop": 128,
+    "mel_bins": 512,
+    "lower_hz": 20,
+    "upper_hz": 7600
+  },
+  "guitar_source": "first 4096 resampled samples of GuitarSet 00_Funk3-98-A_solo microphone recording"
+}

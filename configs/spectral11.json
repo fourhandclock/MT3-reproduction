@@ -1,0 +1,38 @@
+{
+  "seed": 42,
+  "total_optimizer_update_cap": 500,
+  "arms": [
+    {"name": "short128", "window_length": 2048, "n_fft": 2048},
+    {"name": "long256", "window_length": 4096, "n_fft": 4096}
+  ],
+  "common_target_delay_frames": 13,
+  "common_leading_mask_frames": 26,
+  "training": {
+    "epochs": 5,
+    "max_steps": 250,
+    "samples_per_epoch": 200,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 26,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "decoder_parameters": {
+    "onset_threshold": 0.55,
+    "activity_threshold": 0.35,
+    "onset_backdate_seconds": 0.06
+  },
+  "validation_packet_ms": 20,
+  "pitch_diagnostics": {"threshold": 0.5, "low_register_midi": [40, 51]},
+  "selection_rule": "Final step-250 mean validation exact-state frame F1 on the common original source span, then original-source note onset F1; short128 wins exact ties.",
+  "normalization_rule": "All frames from 48 training recordings only; float32 features/squares, float64 reductions, population variance, per-bin std floor 0.3. Same recipe independently for each window.",
+  "sanity_reference": "outputs/acoustic10/sanity.json",
+  "test_inference_allowed": false,
+  "production_promotion": false
+}

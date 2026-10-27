@@ -1,0 +1,116 @@
+{
+  "seed": 42,
+  "train_count": 48,
+  "validation_count": 12,
+  "train_progression": 1,
+  "validation_progression": 2,
+  "train_audio_seconds": 24.0,
+  "evaluation_audio_seconds": 12.0,
+  "feature": {
+    "sample_rate": 16000,
+    "hop_length": 160,
+    "fmin_midi": 40,
+    "n_bins": 216,
+    "bins_per_octave": 36,
+    "filter_scale": 1.0,
+    "log_floor": 1e-05
+  },
+  "model": {
+    "channels": [
+      24,
+      48,
+      96
+    ],
+    "projection_size": 128,
+    "gru_hidden_size": 128,
+    "gru_layers": 2,
+    "bidirectional": true,
+    "dropout": 0.1,
+    "max_fret": 24,
+    "pitch_min": 40,
+    "pitch_max": 88
+  },
+  "training": {
+    "epochs": 5,
+    "max_steps": 500,
+    "samples_per_epoch": 400,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 8,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "early_stopping_patience": 2,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "decoder": {
+    "onset_thresholds": [
+      0.25,
+      0.4,
+      0.55
+    ],
+    "activity_thresholds": [
+      0.45,
+      0.6
+    ],
+    "offset_threshold": 0.5,
+    "minimum_note_seconds": 0.04,
+    "minimum_retrigger_seconds": 0.06,
+    "offset_refinement_seconds": 0.08,
+    "inference_overlap_frames": 40
+  },
+  "robustness": {
+    "training_mix": {
+      "clean": 0.5,
+      "eq": 0.25,
+      "overdrive": 0.25
+    },
+    "validation_conditions": {
+      "clean": {},
+      "eq": {
+        "low_db": 5,
+        "high_db": -5,
+        "split_hz": 1000
+      },
+      "overdrive": {
+        "drive_db": 12,
+        "cabinet_hz": 5000
+      }
+    },
+    "test_conditions": {
+      "clean": {},
+      "dark_eq": {
+        "low_db": 9,
+        "high_db": -12,
+        "split_hz": 1000
+      },
+      "bright_eq": {
+        "low_db": -12,
+        "high_db": 9,
+        "split_hz": 1000
+      },
+      "overdrive": {
+        "drive_db": 20,
+        "cabinet_hz": 4000
+      },
+      "heavy_drive": {
+        "drive_db": 28,
+        "cabinet_hz": 2200
+      },
+      "combined_unseen": {
+        "low_db": -9,
+        "high_db": 9,
+        "split_hz": 1200,
+        "drive_db": 24,
+        "cabinet_hz": 2500
+      }
+    },
+    "external_dataset": "EGSet12 evaluation only",
+    "external_clip_seconds": 12.0,
+    "selection_rule": "Macro onset F1 averaged equally across clean, mild EQ and moderate overdrive validation conditions."
+  }
+}

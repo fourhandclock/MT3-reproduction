@@ -1,0 +1,69 @@
+{
+  "seed": 42,
+  "train_audio_seconds": 24.0,
+  "evaluation_audio_seconds": 12.0,
+  "feature": {
+    "kind": "causal_log_stft",
+    "sample_rate": 16000,
+    "hop_length": 160,
+    "window_length": 2048,
+    "n_fft": 2048,
+    "fmin_midi": 40,
+    "n_bins": 216,
+    "bins_per_octave": 36,
+    "log_floor": 0.00001
+  },
+  "model": {
+    "channels": [24, 48, 96],
+    "projection_size": 128,
+    "gru_hidden_size": 200,
+    "gru_layers": 2,
+    "bidirectional": false,
+    "output_size": 256,
+    "dropout": 0.1,
+    "max_fret": 24,
+    "pitch_min": 40,
+    "pitch_max": 88
+  },
+  "training": {
+    "epochs": 4,
+    "max_steps": 400,
+    "samples_per_epoch": 400,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 8,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "early_stopping_patience": 2,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "decoder": {
+    "onset_thresholds": [0.25, 0.4, 0.55],
+    "activity_thresholds": [0.45, 0.6],
+    "onset_backdates_seconds": [0.0, 0.03, 0.06],
+    "minimum_note_seconds": 0.04,
+    "minimum_retrigger_seconds": 0.06,
+    "offset_threshold": 0.5
+  },
+  "stage_budget": {
+    "total_max_optimizer_updates": 500,
+    "discarded_initial_updates": 100,
+    "corrected_run_max_updates": 400,
+    "reason": "Initial 100-update weights discarded after fixing target-grid and EOF retrigger edge cases. Corrected run starts from scratch."
+  },
+  "streaming": {
+    "confirm_frames": 4,
+    "release_confirm_frames": 2,
+    "evaluation_packet_ms": [20, 40, 80],
+    "validation_packet_ms": 20,
+    "inference_precision": "float32",
+    "model_feature_chunk_frames": 200,
+    "input_scope": "Mono 16000-Hz isolated-guitar PCM; native capture and live resampling are outside this replay experiment.",
+    "lookahead_samples": 0
+  }
+}
