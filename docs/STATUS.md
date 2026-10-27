@@ -1,6 +1,6 @@
 # Current project status
 
-Updated 2026-10-28. Experiments are complete through **Stage 20**; Stage 21 is proposed and has not run.
+Updated 2026-10-28. Experiments are complete through **Stage 21**; Stage 22 is proposed and has not trained.
 
 ## Current models
 
@@ -16,6 +16,21 @@ The offline model has 935,081 parameters and centered CQT features. The latest c
 The causal branch processes file PCM packets. It is not a measured microphone-to-speaker application. The project includes experiments for constrained guitar fingering, rhythm/chord drafts, editable MusicXML and controlled guitar/accompaniment mixtures; their individual limits remain in the [detailed guide](experiment-guide.md).
 
 ## Latest completed experiment
+
+Stage 21 compared saved best-active fret decisions with fixed training-frequency priors, using **zero new training updates and zero neural inference calls**. Every predictor uses the same 22,219 GT-active string-frames and 64 supported positions, with each model's own recorded training history.
+
+| Control500 diagnostic | Saved model | Primary presentation-count majority prior | Unique-count majority prior, secondary |
+| --- | ---: | ---: | ---: |
+| Frame-weighted best-active fret accuracy | 18.66% | 16.62% | 18.03% |
+| Equal-supported-position accuracy | 12.89% | 9.38% | 9.38% |
+
+The model chooses its training-modal fret on **60.64%** of active GT frames. Its accuracy exceeds the independence expectation from its own output/GT marginals by **3.53 percentage points**. This shows some alignment beyond those frequency marginals alongside concentrated predictions. It does not establish a causal mechanism or justify selecting another model.
+
+The primary frame-weighted gain is 2.04 percentage points; the control beats that prior on seven clips, ties on two and loses on three. All declared priors remain visible: presentation, unique and available counts, with deterministic majority and analytic distribution views, plus uniform25. The primary source was fixed before examining these results. GT-active conditioning excludes the activity decision, so these are oracle-support diagnostics rather than end-to-end accuracy.
+
+Open the [prior/confusion review](../outputs/prior21/review.html), [findings](../outputs/prior21/findings.md) or [verification record](../outputs/prior21/verification.json). The [tracked Stage 21 snapshot](../experiments/stage21.snapshot.json) preserves 693 artifact/code/input bindings.
+
+## Previous coverage diagnosis
 
 Stage 20 counted the actual supervised exposure and related it to saved errors, with **zero new training updates and zero neural inference calls**. It examined 48 training target caches, the recorded crop schedules and all 36 model/clip validation cases.
 
@@ -55,13 +70,15 @@ Recent stages repeatedly use the same twelve progression-2 development recording
 
 ## Verification and housekeeping
 
-The latest full test run, on 2026-10-28, passed **606 tests** with one existing dependency deprecation warning. This adds 26 Stage 20 checks and two checks for preserving an earlier model selection during a later diagnosis. See the [Stage 20 test record](../outputs/coverage20/test-results.json).
+The latest full test run, on 2026-10-28, passed **633 tests** with one existing dependency deprecation warning, including 27 new Stage 21 tests. See the [Stage 21 test record](../outputs/prior21/test-results.json).
 
-The independent audit reconstructed both histories using delayed target arrays and crop masks, then compared them with the main source-range counting algorithm. It reproduced all original frame totals and official note matches, and checked exact values in 2,259 note rows, 300 coverage rows and 900 class-error rows. Browser checks covered six model/policy views, 420 filter states, 54 export links and six exact JSON downloads; desktop and mobile screenshots were inspected.
+Stage 21 independently reconstructed all three saved-model confusions with scalar comparisons and all 21 prior confusions with explicit expected-mass loops. It checked exact CSV values in 900 prior rows, 3,600 class rows, 144 string rows, 288 case rows and 38,400 supported-class confusion rows. Browser checks covered 24 model/predictor views, 576 control states, 264 export links, three exact confusion-JSON downloads and 36 source-case links. Desktop and mobile screenshots were inspected.
+
+Stage 20's independent audit reconstructed both histories using delayed target arrays and crop masks, then compared them with the main source-range counting algorithm. It reproduced all original frame totals and official note matches, and checked exact values in 2,259 note rows, 300 coverage rows and 900 class-error rows. Its browser checks covered six model/policy views, 420 filter states, 54 export links and six exact JSON downloads; desktop and mobile screenshots were inspected.
 
 Stage 19's original run passed 565 tests and records 36 audited model/clip cases, twelve bit-identical parent probability reproductions, exact exports and checks of all 36 browser views. Its original [test report](../outputs/fret19/test-results.json) and [audit](../outputs/fret19/audit.json) remain unchanged.
 
-The full test run verified Stage 19's **304 artifact/code bindings** before and after the tests. The final integrity check covers all 20 indexed stages and the Stage 20 snapshot's **658 artifact/code/input bindings**. No historical report, producer or checkpoint was regenerated.
+The full test run verified Stage 20's **658 artifact/code/input bindings** before and after the tests. The final integrity check covers all 21 indexed stages and the Stage 21 snapshot's **693 artifact/code/input bindings**. Historical research artifacts and producers remain byte-identical.
 
 A newly created virtual environment installed **39 packages offline** from the local cache and ran the real offline transcription CLI on CPU. Its 12-second development clip produced 268 timed notes, with matching MIDI/JSON and valid string/fret intervals. Package imports were checked to come from that new environment. This is an environment/export smoke check using local assets and the workspace Python runtime, not an accuracy or clean-machine portability result.
 
@@ -75,6 +92,7 @@ That earlier [housekeeping receipt](../experiments/housekeeping-checks.json) bel
 | One project-wide verification command | Complete: saved hashes, indexed paths, dependency compatibility and full tests. |
 | Fresh isolated-environment transcription smoke run | Complete: offline install, CPU CLI and MIDI/JSON contract checks. |
 | Stage 20 coverage diagnosis | Complete: zero training/inference, independent counts, exports and browser checks. |
+| Stage 21 training-prior diagnosis | Complete: zero training/inference, scalar reconstructions, full confusions and browser checks. |
 
 Current checks in the existing workspace:
 
@@ -86,9 +104,9 @@ The full historical test suite uses local checkpoint/data assets in addition to 
 
 ## Next research step
 
-The [Stage 21 proposal](../outputs/coverage20/next-experiment.json) is a **zero-training, zero-neural-inference comparison with training-frequency priors**. It asks whether saved within-string fret decisions on reference-active frames improve on the frequent frets in each model's own supervised history.
+The [Stage 22 proposal](../outputs/prior21/next-experiment.json) is a matched class-weighting trial capped at **450 new optimizer updates total**: three arms receive 150 updates over three shared sampled-crop epochs. All begin from the same complete saved control500 model/AdamW/AMP/RNG state and end at lifetime step650.
 
-The proposed comparison will separate frequency-weighted and equal-label views and inspect supported-class confusions. Conditioning on GT-active frames is an oracle diagnostic, not a deployable decoder. The proposal has not run and does not authorize a production model choice. Independent recordings remain necessary for a later generalization claim.
+The arms are original loss, uniform active-only fret CE and the same auxiliary term with bounded inverse-square-root class weights from unique supervised training counts. Weighting is a hypothesis to test, not an established fix. Fixed final state/note scores and conditional fret diagnostics will expose tradeoffs. The trial has not trained, allows no independent-test inference and proposes no production promotion. Independent recordings remain necessary for a later generalization claim.
 
 ## Preserving the workspace
 

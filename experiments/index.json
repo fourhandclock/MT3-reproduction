@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-28",
-  "completed_through": 20,
+  "completed_through": 21,
   "local_artifacts_in_git": false,
   "default": {
     "module": "cnn_gru",
@@ -16,13 +16,13 @@
     "production_promoted": false
   },
   "latest_snapshot": {
-    "stage": 20,
-    "path": "experiments/stage20.snapshot.json",
-    "sha256": "f6d33be4c8a8a2090c01975de10ac6fd94e3e338616d8d5916ab87ac6b1e5717",
-    "artifact_root": "outputs/coverage20",
+    "stage": 21,
+    "path": "experiments/stage21.snapshot.json",
+    "sha256": "9c0b4e6b11875a60daba31b5ea7f7c720ef01cd7417aad8d9b3e49354213bed9",
+    "artifact_root": "outputs/prior21",
     "code_root": ".",
     "model_record": "outputs/fret19/validation/run.json",
-    "binding_count": 658
+    "binding_count": 693
   },
   "stages": [
     {
@@ -264,16 +264,28 @@
       "verification": "outputs/coverage20/verification.json",
       "recorded_new_optimizer_updates": 0,
       "recorded_selected_arm": null
+    },
+    {
+      "stage": 21,
+      "status": "completed",
+      "module": "prior21",
+      "config": "configs/prior21.json",
+      "output_root": "outputs/prior21",
+      "review": "outputs/prior21/review.html",
+      "report": "outputs/prior21/report.md",
+      "verification": "outputs/prior21/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
     }
   ],
   "planned": [
     {
-      "stage": 21,
-      "status": "proposed_not_executed",
-      "kind": "training_prior_confusion_diagnosis",
-      "proposal": "outputs/coverage20/next-experiment.json",
-      "new_optimizer_updates": 0,
-      "neural_inference_calls": 0
+      "stage": 22,
+      "status": "proposed_not_trained",
+      "kind": "matched_active_fret_class_weighting",
+      "proposal": "outputs/prior21/next-experiment.json",
+      "planned_new_optimizer_updates": 450,
+      "training_executed": false
     }
   ]
 }

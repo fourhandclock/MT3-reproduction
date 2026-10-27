@@ -742,6 +742,29 @@ Open the local [coverage review](../outputs/coverage20/review.html), [findings](
 
 `python -m coverage20 run` performs the original zero-inference counting pass on a workspace with the frozen predecessors restored and no completed Stage 20 verification. Verified roots reject repeat generation. The proposed Stage 21 compares saved fret choices with training-frequency priors under GT-active conditioning; it has not run and cannot establish a deployable decoder or independent generalization result.
 
+## Stage 21: training priors and conditional-fret confusions
+
+The `prior21` package compares saved best-active fret decisions with fixed training-frequency priors, without training or neural inference. All comparisons use22,219 GT-active string-frames across64 supported positions from the same twelve development recordings. Source0:1000 aligns with saved predictions13:1013; the first26 source frames and per-string conflicts are excluded. Best-active argmax is over frets0-24 even when inactive25 wins the full-state decision. This GT-activity support is an oracle diagnostic, not end-to-end transcription accuracy.
+
+The declared primary prior picks each string's most frequently presented training fret, resolving ties toward the lowest fret. All declared secondary views remain visible: unique-count and available-count majority priors, analytic distribution priors for all three sources, and uniform25. Priors use only each model's own frozen Stage20 training history. No baseline source, threshold or model was selected from the diagnosis.
+
+For `control500`, frame-weighted best-active fret accuracy is18.66% versus16.62% for the primary prior, a2.04 percentage-point gain. Equal-supported-position accuracy is12.89% versus9.38%. The unique-count and available-count majority priors each reach18.03%, and remain secondary. The control wins on seven clips, ties on two and loses on three against the primary prior. Its mean paired clip gain is2.51 percentage points, which has different weighting from the pooled frame gain.
+
+The model chooses its training-modal fret on60.64% of GT-active frames. Its own within-string output/GT marginal independence expectation is15.13%; its observed accuracy exceeds this by3.53 percentage points. Concentrated predictions coexist with some alignment beyond the marginals. This does not prove that class imbalance causes the errors or that balancing will improve state/note scores. Frame-weighted, equal-position and equal-string denominators remain separate; unsupported classes retain null recall.
+
+Full25x25 within-string confusions retain every predicted fret. Distribution priors contain analytic fractional expected mass, not sampled decisions. The independent audit reconstructs model choices using scalar comparisons and prior expectations using explicit loops. It verifies exact CSV values in900 prior rows,3,600 class rows,144 string rows,288 case rows and38,400 supported-class confusion rows. **633 tests pass**, including27 new Stage21 tests, with one existing dependency warning. Browser QA covers24 model/predictor views,576 control states,264 export links,three exact confusion-JSON downloads and36 source-case links. Desktop and mobile screenshots were inspected.
+
+Open the [prior/confusion review](../outputs/prior21/review.html), [findings](../outputs/prior21/findings.md) or [verification](../outputs/prior21/verification.json). The [tracked snapshot](../experiments/stage21.snapshot.json) preserves693 artifact/code/input bindings. The Stage19 research selection persists; conditional diagnostic scores do not select a replacement.
+
+```powershell
+.\.venv\Scripts\python.exe -m prior21 audit
+.\.venv\Scripts\python.exe -m prior21 report
+.\.venv\Scripts\python.exe scripts/verify_prior21.py
+.\.venv\Scripts\python.exe scripts/check_project.py --integrity-only
+```
+
+`python -m prior21 run` creates the original zero-inference diagnosis when its frozen predecessors are restored and no completed Stage21 verification exists. Verified roots reject repeat generation. Stage22 is proposed, not trained: original loss, uniform active-only fret CE and bounded class-weighted CE receive the same three crop epochs from the same fully restored control500 state. The cap is450 new updates total,150 per arm. Unique-supervised training counts define fixed inverse-square-root weights clipped at4; the weighted active CE divides by the sum of active weights. No extra sanity training, calibration search, independent-test inference or production promotion is proposed.
+
 ## Sources
 
 - [Google/Magenta MT3](https://github.com/magenta/mt3) and [paper](https://arxiv.org/html/2111.03017).

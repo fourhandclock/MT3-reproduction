@@ -1,0 +1,14 @@
+{
+  "stage": 21,
+  "proposal": "outputs/coverage20/next-experiment.json",
+  "proposal_sha256": "b8e99f9cbcac4ab68446dd5e956c604a2eac6fa0263b7669a2eaba02867d5222",
+  "source_verification_sha256": "f6d33be4c8a8a2090c01975de10ac6fd94e3e338616d8d5916ab87ac6b1e5717",
+  "source_frames": 1000,
+  "source_delay_frames": 13,
+  "leading_mask_frames": 26,
+  "prior_count_sources": ["presentations", "unique", "available"],
+  "primary_prior": "presentations_top1",
+  "tie_rule": "lowest_fret",
+  "include_uniform25": true,
+  "paired_tie_tolerance": 1e-12
+}
