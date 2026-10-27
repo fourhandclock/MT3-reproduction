@@ -92,3 +92,37 @@ def test_absolute_and_escaping_paths_are_rejected(tmp_path):
     for name in ('../outside', str(tmp_path.resolve())):
         with pytest.raises(ValueError):
             local_path(tmp_path, name)
+
+
+@pytest.mark.parametrize('bound', [True, False])
+def test_diagnosis_snapshot_preserves_earlier_model_selection(workspace, bound):
+    index_path = workspace / 'experiments/index.json'
+    index = json.loads(index_path.read_bytes())
+    original = json.loads((workspace / 'experiments/snapshot.json').read_bytes())
+    folder = workspace / 'outputs/audit'
+    folder.mkdir()
+    (workspace / 'audit').mkdir()
+    (workspace / 'configs/audit.json').write_text('{}')
+    for name in ('summary.json', 'review.html', 'report.md'):
+        (folder / name).write_text('{}')
+    run = 'outputs/stage/validation/run.json'
+    snapshot = {**original, 'stage': 2, 'selected_arm': None,
+                'research_selection': {'stage': 1, 'selected_arm': 'child'},
+                'artifact_sha256': {'summary.json': sha(folder / 'summary.json')},
+                'input_sha256': {run: sha(workspace / run)} if bound else {}}
+    saved = workspace / 'experiments/audit.snapshot.json'
+    saved.write_text(json.dumps(snapshot))
+    (folder / 'verification.json').write_bytes(saved.read_bytes())
+    index['completed_through'] = 2
+    index['stages'].append({'stage': 2, 'status': 'completed', 'module': 'audit', 'config': 'configs/audit.json',
+                            'output_root': 'outputs/audit', 'review': 'outputs/audit/review.html',
+                            'report': 'outputs/audit/report.md', 'verification': 'outputs/audit/verification.json'})
+    index['latest_snapshot'] = {'stage': 2, 'path': 'experiments/audit.snapshot.json', 'sha256': sha(saved),
+                                'artifact_root': 'outputs/audit', 'code_root': '.',
+                                'model_record': run, 'binding_count': 4 if bound else 3}
+    index_path.write_text(json.dumps(index))
+    if bound:
+        assert integrity(workspace)['indexed_stages'] == 2
+    else:
+        with pytest.raises(ValueError, match='hash-bound'):
+            integrity(workspace)

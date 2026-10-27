@@ -717,6 +717,31 @@ Open `outputs/fret19/review.html` and `findings.md`. New final models are `outpu
 
 Initial training uses `python -m fret19 run --device cuda` on a fresh root. Completed roots reject repeat training; the original CUDA scaler/RNG state is required for this continuation. The next proposed stage is a zero-training audit of per-string/fret data coverage and actual supervised crop exposure, using saved probabilities to relate rare/unseen labels to errors. It has not run. Independent recordings remain necessary for a generalization claim.
 
+## Stage 20: supervised-label coverage diagnosis
+
+Stage 20 follows the recorded Stage 19 proposal with zero new training, neural inference or processing-clock measurements. The new `coverage20` package reads frozen target caches, crop schedules, probabilities and official saved note decisions. It never loads feature arrays, waveforms or a neural checkpoint.
+
+The 48 training recordings contain 174,071 valid active source string-frames. The parent's sampled epochs1-5 present 242,592 active string-frames, covering 127,390 unique source-frame/string identities. Extending the shared history through epochs1-10 gives 476,406 presentations and 154,681 unique identities. Each history presents 88 of the 150 possible string/fret positions; all 64 positions used by these validation clips are among them.
+
+For `control500` argmax, the 1000+ presentation bin contains 21,386 of 22,219 valid active GT string-frames and 19,049 errors: 95.81% of all active errors, with an 89.07% within-bin error rate. The remaining 833 active frames in lower-exposure bins all fail exact-state prediction. No validation GT frame or scored reference onset belongs to an unseen position. This does not estimate unseen-position performance or establish that repeated exposure is sufficient; repeated frames can still represent limited independent diversity.
+
+Counts preserve full-recording target delay13, delayed-grid leading26 and crop-edge26 masks. Original source identity is `(recording, delayed frame - 13, string)`. Available frames, repeated presentations and unique identities are separate. Each child uses the same combined history; unique coverage is a union rather than the sum of separate epoch-block unique counts.
+
+Frame policies use GT source frames0:1000 against saved predictions13:1013, with the first26 source frames masked. False activity is grouped by predicted position, with all valid inactive GT frames as denominator. Official pitch/onset note matches use all scored onsets in [0,10), including early onsets before the frame mask; string agreement within those official matches is an additional flag. Empty bins retain null rates. Raw argmax and fixed decoder-activity policies remain distinct.
+
+The independent audit reconstructs delayed target arrays and masked crops separately from the primary range-counting algorithm. It checks both histories, original frame totals, all official note matches and exact values in 2,259 note CSV rows, 300 coverage rows and 900 class-error rows. **606 tests pass**, with one existing dependency warning. Browser QA checks six model/policy views, 420 filter states, 54 export links, six exact JSON downloads and 36 source-case links, including URL-quoted sharp signs. Desktop and mobile screenshots were inspected.
+
+Open the local [coverage review](../outputs/coverage20/review.html), [findings](../outputs/coverage20/findings.md) or [verification](../outputs/coverage20/verification.json). The tracked [snapshot](../experiments/stage20.snapshot.json) preserves 658 artifact/code/input bindings. The offline default and Stage 19 research selection persist; no new selection occurred.
+
+```powershell
+.\.venv\Scripts\python.exe -m coverage20 audit
+.\.venv\Scripts\python.exe -m coverage20 report
+.\.venv\Scripts\python.exe scripts/verify_coverage20.py
+.\.venv\Scripts\python.exe scripts/check_project.py --integrity-only
+```
+
+`python -m coverage20 run` performs the original zero-inference counting pass on a workspace with the frozen predecessors restored and no completed Stage 20 verification. Verified roots reject repeat generation. The proposed Stage 21 compares saved fret choices with training-frequency priors under GT-active conditioning; it has not run and cannot establish a deployable decoder or independent generalization result.
+
 ## Sources
 
 - [Google/Magenta MT3](https://github.com/magenta/mt3) and [paper](https://arxiv.org/html/2111.03017).

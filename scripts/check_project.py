@@ -82,9 +82,10 @@ def integrity(root):
     # Exact bytes matter: JSON equivalence alone does not preserve the receipt.
     bind(local_path(root, stages[-1]['verification']), latest['sha256'])
     count = 0
-    for field, base in (('artifact_sha256', 'artifact_root'), ('code_sha256', 'code_root')):
+    for field, base in (('artifact_sha256', 'artifact_root'), ('code_sha256', 'code_root'),
+                        ('input_sha256', 'code_root')):
         base_path = local_path(root, latest[base])
-        for name, expected in snapshot[field].items():
+        for name, expected in snapshot.get(field, {}).items():
             bind(local_path(base_path, name), expected)
             count += 1
     if count != latest['binding_count']:
@@ -93,7 +94,7 @@ def integrity(root):
     bind(local_path(root, default['checkpoint']), default['checkpoint_sha256'])
 
     # The hashed run record supplies paths for checkpoints outside the latest output root.
-    run_path = local_path(root, latest['artifact_root']) / 'validation/run.json'
+    run_path = local_path(root, latest.get('model_record', latest['artifact_root'] + '/validation/run.json'))
     if run_path.relative_to(root).as_posix() not in checked:
         raise ValueError('Checkpoint run record must be hash-bound by the snapshot')
     run = json.loads(run_path.read_bytes())
@@ -104,8 +105,9 @@ def integrity(root):
     for mode, name in run['checkpoint_paths'].items():
         bind(local_path(root, name), run['checkpoint_sha256'][mode])
     research = index['latest_research']
-    if (research['stage'] != latest['stage']
-            or research['selected_arm'] != snapshot['selected_arm']
+    selection = snapshot.get('research_selection', {'stage': latest['stage'], 'selected_arm': snapshot.get('selected_arm')})
+    if (research['stage'] != selection['stage'] or research['stage'] > latest['stage']
+            or research['selected_arm'] != selection['selected_arm']
             or research['checkpoint'] != run['checkpoint_paths'][research['selected_arm']]):
         raise ValueError('Latest research selection differs from saved evidence')
     return {'indexed_stages': len(stages), 'snapshot_bindings': count,

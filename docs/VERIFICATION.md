@@ -14,12 +14,14 @@ From the project root:
 
 The command checks:
 
-- Source/config/report/review paths for all 19 indexed stages.
-- The tracked Stage 19 snapshot's SHA256 and its exact-byte identity with the
+- Source/config/report/review paths for all 20 indexed stages.
+- The latest tracked snapshot's SHA256 and its exact-byte identity with the
   original local verification record.
-- All 304 artifact/code bindings in that snapshot, the default checkpoint and
+- All 658 artifact/code/input bindings in the Stage 20 snapshot, the default checkpoint and
   all three checkpoints referenced by the hash-bound Stage 19 run record.
-- Agreement between the indexed research selection and the saved run.
+- Agreement between the indexed research selection and the saved run. A later
+  diagnosis can preserve an earlier trained-model selection; its referenced
+  model record must itself be hash-bound by the snapshot.
 - Installed dependency compatibility with `uv pip check` and the full pytest suite.
 - The same saved hashes again after the tests, to catch accidental changes.
 
@@ -35,8 +37,8 @@ For just the path/hash checks, without importing ML packages or running tests:
 
 The shorter mode is labeled in its report. It does not imply that tests or
 dependencies passed. A source-only checkout needs the ignored assets restored
-from backup for either mode. The 304 hashes cover the latest snapshot, not every
-file ever produced in all 19 stages. Existing historical audit/browser receipts
+from backup for either mode. The 658 bindings cover the latest snapshot, not every
+file ever produced in all 20 stages. Existing historical audit/browser receipts
 are checked as saved evidence; this command does not rerun the browser.
 
 ## Fresh isolated-environment transcription

@@ -1,6 +1,6 @@
 # Current project status
 
-Updated 2026-10-28. Experiments are complete through **Stage 19**; Stage 20 is proposed and has not run.
+Updated 2026-10-28. Experiments are complete through **Stage 20**; Stage 21 is proposed and has not run.
 
 ## Current models
 
@@ -16,6 +16,21 @@ The offline model has 935,081 parameters and centered CQT features. The latest c
 The causal branch processes file PCM packets. It is not a measured microphone-to-speaker application. The project includes experiments for constrained guitar fingering, rhythm/chord drafts, editable MusicXML and controlled guitar/accompaniment mixtures; their individual limits remain in the [detailed guide](experiment-guide.md).
 
 ## Latest completed experiment
+
+Stage 20 counted the actual supervised exposure and related it to saved errors, with **zero new training updates and zero neural inference calls**. It examined 48 training target caches, the recorded crop schedules and all 36 model/clip validation cases.
+
+| Training history | Available active source frames | Repeated active presentations | Unique supervised string-frame identities |
+| --- | ---: | ---: | ---: |
+| Parent, epochs 1-5 | 174,071 | 242,592 | 127,390 |
+| Each child, epochs 1-10 | 174,071 | 476,406 | 154,681 |
+
+All **64 ground-truth positions** used by validation had already received supervision; the unseen bin has no active frames or reference notes. For `control500` argmax, the 1000+ presentation bin contains 21,386 of 22,219 active GT string-frames. It accounts for **95.81% of active-frame errors**, with an **89.07% within-bin error rate**. The remaining 833 active frames in lower-exposure bins all fail exact-state prediction.
+
+This points toward difficulty predicting supported positions. Repeated frames can still represent few independent examples, and the bin comparison does not establish causation. Each model uses its own history; the children's shared exposure is counted once per history. Pitch-versus-position diagnostics retain their empty validation cohorts rather than inventing error rates.
+
+Open the [coverage review](../outputs/coverage20/review.html), [findings](../outputs/coverage20/findings.md) or [verification record](../outputs/coverage20/verification.json). The [tracked Stage 20 snapshot](../experiments/stage20.snapshot.json) preserves 658 artifact/code/input bindings, including the source experiment receipts and frozen target caches. No new model was selected.
+
+## Latest trained comparison
 
 Stage 19 restored the same 250-update parent into two arms. Each received 250 new updates over five additional sampled-crop epochs, reaching 500 lifetime updates. The stage spent **500 new optimizer updates total**. The one shared parent's 250 historical updates are counted once.
 
@@ -40,13 +55,17 @@ Recent stages repeatedly use the same twelve progression-2 development recording
 
 ## Verification and housekeeping
 
-The latest full test run, on 2026-10-28, passed **578 tests** with one existing dependency deprecation warning. This includes 13 new failure-path checks for the project verifier. The [housekeeping receipt](../experiments/housekeeping-checks.json) records the new checks separately from historical experiment evidence.
+The latest full test run, on 2026-10-28, passed **606 tests** with one existing dependency deprecation warning. This adds 26 Stage 20 checks and two checks for preserving an earlier model selection during a later diagnosis. See the [Stage 20 test record](../outputs/coverage20/test-results.json).
+
+The independent audit reconstructed both histories using delayed target arrays and crop masks, then compared them with the main source-range counting algorithm. It reproduced all original frame totals and official note matches, and checked exact values in 2,259 note rows, 300 coverage rows and 900 class-error rows. Browser checks covered six model/policy views, 420 filter states, 54 export links and six exact JSON downloads; desktop and mobile screenshots were inspected.
 
 Stage 19's original run passed 565 tests and records 36 audited model/clip cases, twelve bit-identical parent probability reproductions, exact exports and checks of all 36 browser views. Its original [test report](../outputs/fret19/test-results.json) and [audit](../outputs/fret19/audit.json) remain unchanged.
 
-The new routine checker verified all **304 artifact/code bindings** from the tracked Stage 19 snapshot before and after the full test suite. It also checked indexed paths, the default checkpoint and all three Stage 19 model identities. No historical report, producer or checkpoint was regenerated.
+The full test run verified Stage 19's **304 artifact/code bindings** before and after the tests. The final integrity check covers all 20 indexed stages and the Stage 20 snapshot's **658 artifact/code/input bindings**. No historical report, producer or checkpoint was regenerated.
 
 A newly created virtual environment installed **39 packages offline** from the local cache and ran the real offline transcription CLI on CPU. Its 12-second development clip produced 268 timed notes, with matching MIDI/JSON and valid string/fret intervals. Package imports were checked to come from that new environment. This is an environment/export smoke check using local assets and the workspace Python runtime, not an accuracy or clean-machine portability result.
+
+That earlier [housekeeping receipt](../experiments/housekeeping-checks.json) belongs to commit `466f77b`; its helper-source hashes describe that version. The Stage 20 snapshot records the updated checker that also supports diagnosis snapshots while preserving the Stage 19 model selection.
 
 | Housekeeping item | Status |
 | --- | --- |
@@ -55,7 +74,7 @@ A newly created virtual environment installed **39 packages offline** from the l
 | Concise README, current status and experiment index | Complete in this documentation cleanup. |
 | One project-wide verification command | Complete: saved hashes, indexed paths, dependency compatibility and full tests. |
 | Fresh isolated-environment transcription smoke run | Complete: offline install, CPU CLI and MIDI/JSON contract checks. |
-| Stage 20 coverage diagnosis | Proposed; not executed. |
+| Stage 20 coverage diagnosis | Complete: zero training/inference, independent counts, exports and browser checks. |
 
 Current checks in the existing workspace:
 
@@ -67,9 +86,9 @@ The full historical test suite uses local checkpoint/data assets in addition to 
 
 ## Next research step
 
-The [Stage 20 proposal](../outputs/fret19/next-experiment.json) is a **zero-training, zero-neural-inference coverage audit**. It will compare available training labels with actual supervised crop exposure and relate rare/unseen `(string, fret)` labels to saved errors.
+The [Stage 21 proposal](../outputs/coverage20/next-experiment.json) is a **zero-training, zero-neural-inference comparison with training-frequency priors**. It asks whether saved within-string fret decisions on reference-active frames improve on the frequent frets in each model's own supervised history.
 
-Available source frames, repeated supervised presentations and unique supervised source-frame/string identities will be counted separately. Parent and child histories differ and must use their own recorded crop schedules. The proposal makes no coverage finding yet and does not select another model. Independent recordings remain necessary for a later generalization claim.
+The proposed comparison will separate frequency-weighted and equal-label views and inspect supported-class confusions. Conditioning on GT-active frames is an oracle diagnostic, not a deployable decoder. The proposal has not run and does not authorize a production model choice. Independent recordings remain necessary for a later generalization claim.
 
 ## Preserving the workspace
 

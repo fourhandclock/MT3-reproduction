@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-28",
-  "completed_through": 19,
+  "completed_through": 20,
   "local_artifacts_in_git": false,
   "default": {
     "module": "cnn_gru",
@@ -16,12 +16,13 @@
     "production_promoted": false
   },
   "latest_snapshot": {
-    "stage": 19,
-    "path": "experiments/stage19.snapshot.json",
-    "sha256": "f53ca8cdb437bc873500f0166e3ee6deb35c07c646f1f5ac193022df0884638c",
-    "artifact_root": "outputs/fret19",
+    "stage": 20,
+    "path": "experiments/stage20.snapshot.json",
+    "sha256": "f6d33be4c8a8a2090c01975de10ac6fd94e3e338616d8d5916ab87ac6b1e5717",
+    "artifact_root": "outputs/coverage20",
     "code_root": ".",
-    "binding_count": 304
+    "model_record": "outputs/fret19/validation/run.json",
+    "binding_count": 658
   },
   "stages": [
     {
@@ -251,14 +252,26 @@
       "verification": "outputs/fret19/verification.json",
       "recorded_new_optimizer_updates": 500,
       "recorded_selected_arm": "control500"
+    },
+    {
+      "stage": 20,
+      "status": "completed",
+      "module": "coverage20",
+      "config": "configs/coverage20.json",
+      "output_root": "outputs/coverage20",
+      "review": "outputs/coverage20/review.html",
+      "report": "outputs/coverage20/report.md",
+      "verification": "outputs/coverage20/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
     }
   ],
   "planned": [
     {
-      "stage": 20,
+      "stage": 21,
       "status": "proposed_not_executed",
-      "kind": "data_coverage_diagnosis",
-      "proposal": "outputs/fret19/next-experiment.json",
+      "kind": "training_prior_confusion_diagnosis",
+      "proposal": "outputs/coverage20/next-experiment.json",
       "new_optimizer_updates": 0,
       "neural_inference_calls": 0
     }

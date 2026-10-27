@@ -1,0 +1,7 @@
+{
+  "stage": 20,
+  "proposal": "outputs/fret19/next-experiment.json",
+  "proposal_sha256": "ba75a22bf22964b5724938e4402a72b70858e50d8e41253b6dc87f14f3974a0f",
+  "source_verification_sha256": "f53ca8cdb437bc873500f0166e3ee6deb35c07c646f1f5ac193022df0884638c",
+  "parent_verification_sha256": "bf4ff0c9f9227724c80dd215db01e5ef8d8393c9d681cb669ca2e42b78bbc2f9"
+}
