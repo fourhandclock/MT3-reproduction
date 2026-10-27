@@ -40,28 +40,30 @@ Recent stages repeatedly use the same twelve progression-2 development recording
 
 ## Verification and housekeeping
 
-The last recorded full test run, on 2026-10-22, passed **565 tests** with one existing dependency deprecation warning. Stage 19 also records 36 audited model/clip cases, twelve bit-identical parent probability reproductions, exact exports and checks of all 36 browser views. See the [test report](../outputs/fret19/test-results.json) and [audit](../outputs/fret19/audit.json).
+The latest full test run, on 2026-10-28, passed **578 tests** with one existing dependency deprecation warning. This includes 13 new failure-path checks for the project verifier. The [housekeeping receipt](../experiments/housekeeping-checks.json) records the new checks separately from historical experiment evidence.
 
-On 2026-10-28, this documentation cleanup rechecked all **304 artifact/code bindings** from the tracked Stage 19 snapshot. Historical producer modules and experiment artifacts remain in place. The documentation checks do not constitute a new inference benchmark or a fresh full test run.
+Stage 19's original run passed 565 tests and records 36 audited model/clip cases, twelve bit-identical parent probability reproductions, exact exports and checks of all 36 browser views. Its original [test report](../outputs/fret19/test-results.json) and [audit](../outputs/fret19/audit.json) remain unchanged.
+
+The new routine checker verified all **304 artifact/code bindings** from the tracked Stage 19 snapshot before and after the full test suite. It also checked indexed paths, the default checkpoint and all three Stage 19 model identities. No historical report, producer or checkpoint was regenerated.
+
+A newly created virtual environment installed **39 packages offline** from the local cache and ran the real offline transcription CLI on CPU. Its 12-second development clip produced 268 timed notes, with matching MIDI/JSON and valid string/fret intervals. Package imports were checked to come from that new environment. This is an environment/export smoke check using local assets and the workspace Python runtime, not an accuracy or clean-machine portability result.
 
 | Housekeeping item | Status |
 | --- | --- |
 | Local Git baseline | Complete: initial commit `895eed6`, branch `main`. |
 | Preserve file bytes across Git checkouts | Complete: `.gitattributes` disables automatic line-ending conversion. |
 | Concise README, current status and experiment index | Complete in this documentation cleanup. |
-| One project-wide verification command | Planned; current commands remain listed below. |
-| Fresh isolated-environment transcription smoke run | Planned; no new portability claim yet. |
+| One project-wide verification command | Complete: saved hashes, indexed paths, dependency compatibility and full tests. |
+| Fresh isolated-environment transcription smoke run | Complete: offline install, CPU CLI and MIDI/JSON contract checks. |
 | Stage 20 coverage diagnosis | Proposed; not executed. |
 
 Current checks in the existing workspace:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-$env:UV_CACHE_DIR = Join-Path (Get-Location) '.cache\uv'
-uv pip check --python .venv\Scripts\python.exe
+.\.venv\Scripts\python.exe scripts/check_project.py
 ```
 
-The full historical test suite uses local checkpoint/data assets in addition to source and fixtures. Stage-specific reproduction commands are in the [detailed guide](experiment-guide.md). Some report/audit commands rewrite their output records, so they are different from a read-only file-integrity check.
+The full historical test suite uses local checkpoint/data assets in addition to source and fixtures. The [verification guide](VERIFICATION.md) explains the command's scope, integrity-only mode and separate fresh-environment smoke runner. Stage-specific reproduction commands remain in the [detailed guide](experiment-guide.md). Some old report/audit commands rewrite their output records; the new checker reads their saved evidence directly.
 
 ## Next research step
 

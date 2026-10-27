@@ -15,7 +15,7 @@ Low-compute guitar transcription experiments, completed through **Stage 19**. Th
 | Latest completed experiment | Stage 19: active-only conditional-fret supervision. |
 | Selected Stage 19 research candidate | Original-loss `control500`; the added loss was not adopted. |
 | Next research step | Proposed Stage 20: a zero-training coverage audit; not run yet. |
-| Last recorded full test run | 565 passed, one existing dependency warning, 2026-10-22. |
+| Last recorded full test run | 578 passed, one existing dependency warning, 2026-10-28. |
 
 Stage 19's extra supervision raised conditional fret accuracy from 18.79% to 19.44% versus its matched control, but lowered primary string/fret frame F1 from 0.0828 to 0.0749 and note-onset F1 from 0.1148 to 0.1136. The default remains unchanged. These are reused-development results, not a generalization benchmark.
 
@@ -39,7 +39,7 @@ The recorded Windows setup requires `uv` and `git`; it creates a project-local P
 .\scripts\setup.ps1
 ```
 
-Use `-CpuOnly` for the CPU PyTorch installation. Setup can download Python, packages and the pinned MT3 adapter. Rhythm/notation and separation have optional dependency files and instructions in the [guide](docs/experiment-guide.md). Fresh-environment transcription verification is a planned housekeeping step, not a portability claim already established here.
+Use `-CpuOnly` for the CPU PyTorch installation. Setup can download Python, packages and the pinned MT3 adapter. Rhythm/notation and separation have optional dependency files and instructions in the [guide](docs/experiment-guide.md). The smaller [fresh-environment smoke check](docs/VERIFICATION.md#fresh-isolated-environment-transcription) installs only the offline transcription dependencies and runs on CPU.
 
 A source checkout does not include completed training checkpoints, datasets or experiment outputs. Restore those ignored assets from a separate backup to use the saved models and full historical verification suite. The [experiment records](experiments/README.md#verification-and-backups) describe the tracked hash snapshot.
 
@@ -48,12 +48,10 @@ A source checkout does not include completed training checkpoints, datasets or e
 In the recorded workspace:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-$env:UV_CACHE_DIR = Join-Path (Get-Location) '.cache\uv'
-uv pip check --python .venv\Scripts\python.exe
+.\.venv\Scripts\python.exe scripts/check_project.py
 ```
 
-The saved Stage 19 verification covers model/optimizer restoration, matched exposure, probability reproduction, metrics, exports and browser controls. Its compact [tracked snapshot](experiments/stage19.snapshot.json) records 304 artifact/code bindings. This documentation cleanup rechecked those bindings without rewriting experiment outputs. A single project-wide verification command is the next housekeeping task.
+This checks all 19 indexed stages' paths, the latest snapshot's 304 artifact/code bindings, checkpoint identities, installed dependencies and the full test suite. Historical evidence stays unchanged; new logs go under `tmp/project-check/`. See [verification instructions](docs/VERIFICATION.md) for the integrity-only mode and separate fresh-environment transcription check.
 
 ## Repository map
 

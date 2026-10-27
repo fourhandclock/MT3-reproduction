@@ -38,6 +38,8 @@ Review and report links below refer to local, Git-ignored outputs. They work in 
 
 The registry's verification paths point to each stage's existing records where present. A missing record is represented by `null`, not an implied failure or an invented successful audit. The first eight stages use their original reports and run records; this index does not claim that every historical pipeline has been rerun during housekeeping.
 
+The separate [housekeeping receipt](housekeeping-checks.json) records the 2026-10-28 project-wide checks and fresh isolated-environment CPU transcription smoke run. It does not replace the Stage 19 snapshot or create a new research stage. See the [verification guide](../docs/VERIFICATION.md) for repeatable commands and their scope.
+
 `recorded_new_optimizer_updates: null` means the budget was not extracted from a standardized verification record; it does not mean zero training. Use the stage's report for its original budget and accounting.
 
 Git tracks source, configuration, tests, documentation, small reference fixtures and compact records. It does not back up ignored datasets, model weights, outputs or local runtimes. Preserve those separately. Checkpoint identity in [index.json](index.json) helps identify the saved default; it does not supply the checkpoint itself.
