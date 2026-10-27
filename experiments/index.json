@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-28",
+  "completed_through": 19,
+  "local_artifacts_in_git": false,
+  "default": {
+    "module": "cnn_gru",
+    "checkpoint": "outputs/cnn_gru/best-inference.pt",
+    "checkpoint_sha256": "ad015e9c7b41def9274a3c0dceb50e038816b67dda7bd7609ff5fa7080375f8f",
+    "scope": "Offline guitar transcription; unchanged by the recent causal experiments"
+  },
+  "latest_research": {
+    "stage": 19,
+    "selected_arm": "control500",
+    "checkpoint": "outputs/fret19/models/control/final.pt",
+    "production_promoted": false
+  },
+  "latest_snapshot": {
+    "stage": 19,
+    "path": "experiments/stage19.snapshot.json",
+    "sha256": "f53ca8cdb437bc873500f0166e3ee6deb35c07c646f1f5ac193022df0884638c",
+    "artifact_root": "outputs/fret19",
+    "code_root": ".",
+    "binding_count": 304
+  },
+  "stages": [
+    {
+      "stage": 1,
+      "status": "completed",
+      "module": "baseline",
+      "config": "configs/stage1.json",
+      "output_root": "outputs/stage1",
+      "review": "outputs/stage1/review.html",
+      "report": "outputs/stage1/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 2,
+      "status": "completed",
+      "module": "cnn_gru",
+      "config": "configs/cnn_gru.json",
+      "output_root": "outputs/cnn_gru",
+      "review": "outputs/cnn_gru/evaluation/review.html",
+      "report": "outputs/cnn_gru/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 3,
+      "status": "completed",
+      "module": "cnn_transformer",
+      "config": "configs/cnn_transformer.json",
+      "output_root": "outputs/cnn_transformer",
+      "review": "outputs/cnn_transformer/comparison/review.html",
+      "report": "outputs/cnn_transformer/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 4,
+      "status": "completed",
+      "module": "robustness",
+      "config": "configs/robustness.json",
+      "output_root": "outputs/robustness",
+      "review": "outputs/robustness/evaluation/review.html",
+      "report": "outputs/robustness/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 5,
+      "status": "completed",
+      "module": "fingering",
+      "config": "configs/fingering.json",
+      "output_root": "outputs/fingering",
+      "review": "outputs/fingering/evaluation/review.html",
+      "report": "outputs/fingering/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 6,
+      "status": "completed",
+      "module": "rhythm",
+      "config": "configs/rhythm.json",
+      "output_root": "outputs/rhythm",
+      "review": "outputs/rhythm/review.html",
+      "report": "outputs/rhythm/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 7,
+      "status": "completed",
+      "module": "mixtures",
+      "config": "configs/mixtures.json",
+      "output_root": "outputs/mixtures",
+      "review": "outputs/mixtures/review.html",
+      "report": "outputs/mixtures/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 8,
+      "status": "completed",
+      "module": "streaming",
+      "config": "configs/streaming.json",
+      "output_root": "outputs/streaming",
+      "review": "outputs/streaming/review.html",
+      "report": "outputs/streaming/report.md",
+      "verification": null,
+      "recorded_new_optimizer_updates": null,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 9,
+      "status": "completed",
+      "module": "diagnosis9",
+      "config": "configs/diagnosis9.json",
+      "output_root": "outputs/diagnosis9",
+      "review": "outputs/diagnosis9/review.html",
+      "report": "outputs/diagnosis9/report.md",
+      "verification": "outputs/diagnosis9/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 10,
+      "status": "completed",
+      "module": "acoustic10",
+      "config": "configs/acoustic10.json",
+      "output_root": "outputs/acoustic10",
+      "review": "outputs/acoustic10/review.html",
+      "report": "outputs/acoustic10/report.md",
+      "verification": "outputs/acoustic10/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "delay60"
+    },
+    {
+      "stage": 11,
+      "status": "completed",
+      "module": "spectral11",
+      "config": "configs/spectral11.json",
+      "output_root": "outputs/spectral11",
+      "review": "outputs/spectral11/review.html",
+      "report": "outputs/spectral11/report.md",
+      "verification": "outputs/spectral11/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "short128"
+    },
+    {
+      "stage": 12,
+      "status": "completed",
+      "module": "normalization12",
+      "config": "configs/normalization12.json",
+      "output_root": "outputs/normalization12",
+      "review": "outputs/normalization12/review.html",
+      "report": "outputs/normalization12/report.md",
+      "verification": "outputs/normalization12/verification.json",
+      "recorded_new_optimizer_updates": 250,
+      "recorded_selected_arm": "group1"
+    },
+    {
+      "stage": 13,
+      "status": "completed",
+      "module": "optimization13",
+      "config": "configs/optimization13.json",
+      "output_root": "outputs/optimization13",
+      "review": "outputs/optimization13/review.html",
+      "report": "outputs/optimization13/report.md",
+      "verification": "outputs/optimization13/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "group8_500"
+    },
+    {
+      "stage": 14,
+      "status": "completed",
+      "module": "decoder14",
+      "config": "configs/decoder14.json",
+      "output_root": "outputs/decoder14",
+      "review": "outputs/decoder14/review.html",
+      "report": "outputs/decoder14/report.md",
+      "verification": "outputs/decoder14/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 15,
+      "status": "completed",
+      "module": "diagnosis15",
+      "config": "configs/diagnosis15.json",
+      "output_root": "outputs/diagnosis15",
+      "review": "outputs/diagnosis15/review.html",
+      "report": "outputs/diagnosis15/report.md",
+      "verification": "outputs/diagnosis15/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 16,
+      "status": "completed",
+      "module": "supervision16",
+      "config": "configs/supervision16.json",
+      "output_root": "outputs/supervision16",
+      "review": "outputs/supervision16/review.html",
+      "report": "outputs/supervision16/report.md",
+      "verification": "outputs/supervision16/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "state_pitch750"
+    },
+    {
+      "stage": 17,
+      "status": "completed",
+      "module": "multires17",
+      "config": "configs/multires17.json",
+      "output_root": "outputs/multires17",
+      "review": "outputs/multires17/review.html",
+      "report": "outputs/multires17/report.md",
+      "verification": "outputs/multires17/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "short_short"
+    },
+    {
+      "stage": 18,
+      "status": "completed",
+      "module": "headswap18",
+      "config": "configs/headswap18.json",
+      "output_root": "outputs/headswap18",
+      "review": "outputs/headswap18/review.html",
+      "report": "outputs/headswap18/report.md",
+      "verification": "outputs/headswap18/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
+    },
+    {
+      "stage": 19,
+      "status": "completed",
+      "module": "fret19",
+      "config": "configs/fret19.json",
+      "output_root": "outputs/fret19",
+      "review": "outputs/fret19/review.html",
+      "report": "outputs/fret19/report.md",
+      "verification": "outputs/fret19/verification.json",
+      "recorded_new_optimizer_updates": 500,
+      "recorded_selected_arm": "control500"
+    }
+  ],
+  "planned": [
+    {
+      "stage": 20,
+      "status": "proposed_not_executed",
+      "kind": "data_coverage_diagnosis",
+      "proposal": "outputs/fret19/next-experiment.json",
+      "new_optimizer_updates": 0,
+      "neural_inference_calls": 0
+    }
+  ]
+}
