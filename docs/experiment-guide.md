@@ -765,6 +765,41 @@ Open the [prior/confusion review](../outputs/prior21/review.html), [findings](..
 
 `python -m prior21 run` creates the original zero-inference diagnosis when its frozen predecessors are restored and no completed Stage21 verification exists. Verified roots reject repeat generation. Stage22 is proposed, not trained: original loss, uniform active-only fret CE and bounded class-weighted CE receive the same three crop epochs from the same fully restored control500 state. The cap is450 new updates total,150 per arm. Unique-supervised training counts define fixed inverse-square-root weights clipped at4; the weighted active CE divides by the sum of active weights. No extra sanity training, calibration search, independent-test inference or production promotion is proposed.
 
+## Stage 22: matched active-fret class weighting
+
+Stage22 restores the same real `outputs/fret19/models/control/final.pt` step500 parent into three matched arms: original loss, uniform active-only fret CE and bounded class-weighted active-only CE. Each receives150 new updates over the same three sampled-crop epochs11-13, with600 shared crop/gain descriptors. **450 new optimizer updates total** produce three650-update finals. The one500-update historical parent is counted once. No new sanity optimization, scheduler restart or independent-test inference occurs.
+
+A training-only preflight found a zero-support edge case in the frozen proposal: string4/fret17 has50 available active frames but no unique-supervised exposure in epochs1-10, and appears76 times in the fixed new crops. Before any optimizer update, the rule was amended to give available-but-historically-unexposed labels the existing cap4; absent-from-training labels retain zero weight and fail if active. No validation result, crop, arm, coefficient or budget changed. The original proposal is preserved unchanged; `outputs/balance22/class-weights.json` and `preflight-initial.log` record the deviation.
+
+Seen-position weights remain `min(4,sqrt(max unique count within string / class unique count))`, using frozen training-only unique counts. Both auxiliary arms add0.5 times CE over the25 active logits; weighted CE divides sum(weight*CE) by sum(weight). Inactive/conflict labels and masked frames are excluded, empty active batches return differentiable zero and the term runs in float32 outside autocast. It adds no parameters or direct inactive-logit auxiliary gradient; shared weights and active logits can still affect occupancy.
+
+| Model | Mean argmax state F1 | Mean note-onset F1 | Best active fret accuracy | Equal-supported-position fret accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| Parent500 | 0.0828 | 0.1148 | 18.66% | 12.89% |
+| Original650 | 0.1066 | 0.1445 | 20.82% | 12.49% |
+| Uniform CE650 | **0.1203** | **0.1493** | 21.13% | 13.00% |
+| Weighted CE650 | 0.1084 | 0.1310 | 20.49% | 12.98% |
+
+The fixed final-development rule selects **`uniform_ce650`** by mean clip argmax exact-state F1, then official note-onset F1; exact ties prefer original, uniform, then weighted. The parent is ineligible. Weighted versus uniform CE changes state F1 by-0.01192 and onset F1 by-0.01837, so this trial does not support adopting the weighting rule. It is one parent/rule on reused development, not a universal conclusion about class weighting or an independent-generalization result. The default offline workflow is not promoted or replaced.
+
+All arms retain the931,361-parameter two-plane causal network, duplicated past-only128ms frontend, normalization, positive loss weights, constant learning rate0.0001, batch4, full-recording target delay13, leading26 and crop-edge26 masks. Full model, ordered AdamW options/moments/counters, AMP scaler and CPU/CUDA RNG are restored identically. All34 actual optimizer counters reach650, the scaler tracker reaches650, pre-update snapshots match the parent and final paired RNG streams agree. Independent crop reconstruction gives47,469 /43,499 /46,982 active presentations in the three new epochs.
+
+The fresh48-case PCM evaluation reproduces all twelve parent probability sets bit-identically. The no-neural-inference artifact audit checks7,395 exact note/MIDI attacks and14,790 events, frame/head metrics, official note/string scores, source replays and the selected final. **670 tests pass**, including37 new tests, with one existing dependency warning. An initial verification run overlapped browser QA and hit host-memory/CUDA errors; the standalone rerun passed and both attempts remain archived. These reruns add no acoustic training.
+
+Browser QA covers48 model/clip views,240 export links,48 byte-exact JSON downloads,48 playback-preserving model cycles, completion-gated logs,14,790 three-clock event markers,116 EOF tags and active playback switching. Desktop/mobile screenshots were inspected. Timings include probability recording; EOF flush cost is excluded from processing/audio and included in virtual completion. Identical graphs and differing matched-note subsets prevent causal speed or unconditional delay claims. No capture-hardware latency is measured.
+
+Open the [audio review](../outputs/balance22/review.html), [findings](../outputs/balance22/findings.md) or [verification](../outputs/balance22/verification.json). The [tracked snapshot](../experiments/stage22.snapshot.json) preserves1,128 artifact/code/input bindings. The new research checkpoint is `outputs/balance22/models/uniform_ce/final.pt`, loaded with the unchanged `multires17.model.CausalCNNGRU` and its saved two-plane normalization.
+
+```powershell
+.\.venv\Scripts\python.exe -m balance22 audit --device cuda
+.\.venv\Scripts\python.exe scripts/verify_balance22.py
+.\.venv\Scripts\python.exe scripts/check_project.py --integrity-only
+```
+
+The original `python -m balance22 run --device cuda` is single-use: an existing protocol rejects repeat training. `evaluate` permits validation recovery before final verification without optimizer updates; verified roots reject fresh evaluation. The `report` command is pre-verification rendering work and rewrites the presentation receipt, so use the project checker for routine integrity checks on completed evidence. The original CUDA scaler/RNG state cannot be silently discarded on CPU. Run browser QA separately from the full test suite on this8GB host.
+
+Stage23 is proposed, not executed: freeze all four checkpoint identities and the selected uniform-CE final before evaluating the existing progression-3 recordings. It allows zero training, no calibration and no test-driven reselection. Those recordings had earlier historical evaluations and players overlap across splits, so they are not an untouched independent or electric-guitar dataset. Stage22 made no test inference.
+
 ## Sources
 
 - [Google/Magenta MT3](https://github.com/magenta/mt3) and [paper](https://arxiv.org/html/2111.03017).

@@ -14,11 +14,11 @@ From the project root:
 
 The command checks:
 
-- Source/config/report/review paths for all 21 indexed stages.
+- Source/config/report/review paths for all 22 indexed stages.
 - The latest tracked snapshot's SHA256 and its exact-byte identity with the
   original local verification record.
-- All 693 artifact/code/input bindings in the Stage 21 snapshot, the default checkpoint and
-  all three checkpoints referenced by the hash-bound Stage 19 run record.
+- All 1,128 artifact/code/input bindings in the Stage 22 snapshot, the default checkpoint and
+  all four checkpoints referenced by the hash-bound Stage 22 run record.
 - Agreement between the indexed research selection and the saved run. A later
   diagnosis can preserve an earlier trained-model selection; its referenced
   model record must itself be hash-bound by the snapshot.
@@ -37,9 +37,14 @@ For just the path/hash checks, without importing ML packages or running tests:
 
 The shorter mode is labeled in its report. It does not imply that tests or
 dependencies passed. A source-only checkout needs the ignored assets restored
-from backup for either mode. The 693 bindings cover the latest snapshot, not every
-file ever produced in all 21 stages. Existing historical audit/browser receipts
+from backup for either mode. The 1,128 bindings cover the latest snapshot, not every
+file ever produced in all 22 stages. Existing historical audit/browser receipts
 are checked as saved evidence; this command does not rerun the browser.
+
+On this 8GB host, run headless-browser QA separately from the full test suite.
+Stage 22's concurrent attempt hit CPU allocator exhaustion/CUDA errors; the
+standalone rerun passed all 670 tests. Both attempts are retained in that stage's
+test evidence. Repeating verification adds no acoustic experiment training.
 
 ## Fresh isolated-environment transcription
 

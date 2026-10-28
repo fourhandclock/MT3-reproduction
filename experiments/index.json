@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-28",
-  "completed_through": 21,
+  "completed_through": 22,
   "local_artifacts_in_git": false,
   "default": {
     "module": "cnn_gru",
@@ -10,19 +10,20 @@
     "scope": "Offline guitar transcription; unchanged by the recent causal experiments"
   },
   "latest_research": {
-    "stage": 19,
-    "selected_arm": "control500",
-    "checkpoint": "outputs/fret19/models/control/final.pt",
-    "production_promoted": false
+    "stage": 22,
+    "selected_arm": "uniform_ce650",
+    "checkpoint": "outputs/balance22/models/uniform_ce/final.pt",
+    "production_promoted": false,
+    "scope": "Fixed final development state F1 then note F1; no default promotion."
   },
   "latest_snapshot": {
-    "stage": 21,
-    "path": "experiments/stage21.snapshot.json",
-    "sha256": "9c0b4e6b11875a60daba31b5ea7f7c720ef01cd7417aad8d9b3e49354213bed9",
-    "artifact_root": "outputs/prior21",
+    "stage": 22,
+    "path": "experiments/stage22.snapshot.json",
+    "sha256": "38f66103d68f1f3390c50feb776349ef69ee46d93ceede5a74885e26314e07ee",
+    "artifact_root": "outputs/balance22",
     "code_root": ".",
-    "model_record": "outputs/fret19/validation/run.json",
-    "binding_count": 693
+    "model_record": "outputs/balance22/validation/run.json",
+    "binding_count": 1128
   },
   "stages": [
     {
@@ -276,16 +277,29 @@
       "verification": "outputs/prior21/verification.json",
       "recorded_new_optimizer_updates": 0,
       "recorded_selected_arm": null
+    },
+    {
+      "stage": 22,
+      "status": "completed",
+      "module": "balance22",
+      "config": "configs/balance22.json",
+      "output_root": "outputs/balance22",
+      "review": "outputs/balance22/review.html",
+      "report": "outputs/balance22/report.md",
+      "verification": "outputs/balance22/verification.json",
+      "recorded_new_optimizer_updates": 450,
+      "recorded_selected_arm": "uniform_ce650"
     }
   ],
   "planned": [
     {
-      "stage": 22,
-      "status": "proposed_not_trained",
-      "kind": "matched_active_fret_class_weighting",
-      "proposal": "outputs/prior21/next-experiment.json",
-      "planned_new_optimizer_updates": 450,
-      "training_executed": false
+      "stage": 23,
+      "status": "proposed_not_evaluated",
+      "kind": "locked_progression3_evaluation",
+      "proposal": "outputs/balance22/next-experiment.json",
+      "new_optimizer_updates": 0,
+      "test_inference_allowed": true,
+      "model_selection_allowed": false
     }
   ]
 }

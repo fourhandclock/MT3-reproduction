@@ -1,117 +1,68 @@
 # Current project status
 
-Updated 2026-10-28. Experiments are complete through **Stage 21**; Stage 22 is proposed and has not trained.
+Updated 2026-10-28. Experiments are complete through **Stage 22**; Stage 23 is proposed and has not run.
 
 ## Current models
 
-| Role | Model / saved checkpoint | Use |
+| Role | Model / checkpoint | Use |
 | --- | --- | --- |
-| Default transcription workflow | Offline CNN-GRU, `outputs/cnn_gru/best-inference.pt` | Local guitar audio to timed string/fret notes and MIDI; uses future context. |
-| Latest selected research candidate | Stage 19 `control500`, `outputs/fret19/models/control/final.pt` | Causal two-plane CNN-GRU research comparison; selection applies within Stage 19. |
-| Latest tested treatment | `outputs/fret19/models/conditional_fret/final.pt` | Added conditional-fret loss; not adopted. |
-| Pretrained references | MT3 inference adapter and Basic Pitch | Baseline comparisons documented in Stage 1. |
+| Default transcription workflow | Offline CNN-GRU, `outputs/cnn_gru/best-inference.pt` | Local standard-tuning guitar audio to timed string/fret notes and MIDI; uses future context. |
+| Latest selected research candidate | Stage 22 `uniform_ce650`, `outputs/balance22/models/uniform_ce/final.pt` | Fixed final development selection among three matched causal continuations; no default promotion. |
+| Latest weighted treatment | `outputs/balance22/models/balanced_ce/final.pt` | Tested class weighting; not selected. |
+| Pretrained references | MT3 inference adapter and Basic Pitch | Stage 1 baseline comparisons. |
 
-The offline model has 935,081 parameters and centered CQT features. The latest causal models have 931,361 parameters, duplicated past-only 128 ms STFT feature planes and a carried unidirectional GRU state. Their different data, timing, training histories and evaluation settings prevent treating scores across all stages as one model leaderboard.
-
-The causal branch processes file PCM packets. It is not a measured microphone-to-speaker application. The project includes experiments for constrained guitar fingering, rhythm/chord drafts, editable MusicXML and controlled guitar/accompaniment mixtures; their individual limits remain in the [detailed guide](experiment-guide.md).
+The offline model has 935,081 parameters and centered CQT features. The causal models have 931,361 parameters, duplicated past-only 128ms STFT planes and a carried unidirectional GRU state. Different data, timing and training histories prevent treating all stages as one model leaderboard. File-PCM replay does not measure microphone-to-speaker latency.
 
 ## Latest completed experiment
 
-Stage 21 compared saved best-active fret decisions with fixed training-frequency priors, using **zero new training updates and zero neural inference calls**. Every predictor uses the same 22,219 GT-active string-frames and 64 supported positions, with each model's own recorded training history.
+Stage 22 restored the same complete `control500` model, AdamW moments/options/counters, AMP scaler and CPU/CUDA RNG into three arms. Each received **150 new updates over three shared sampled-crop epochs**, reaching lifetime step650. The trial spent **450 new updates total**; its one shared historical parent has500 updates, counted once. The decoder, frontend, normalization and learning rate0.0001 stayed fixed.
 
-| Control500 diagnostic | Saved model | Primary presentation-count majority prior | Unique-count majority prior, secondary |
-| --- | ---: | ---: | ---: |
-| Frame-weighted best-active fret accuracy | 18.66% | 16.62% | 18.03% |
-| Equal-supported-position accuracy | 12.89% | 9.38% | 9.38% |
+| Reused-development metric | Parent500 | Original loss650 | Uniform fret CE650 | Weighted fret CE650 |
+| --- | ---: | ---: | ---: | ---: |
+| Mean clip argmax string/fret state F1, primary | 0.0828 | 0.1066 | **0.1203** | 0.1084 |
+| Mean clip note-onset F1 | 0.1148 | 0.1445 | **0.1493** | 0.1310 |
+| Best fret on all active GT frames | 18.66% | 20.82% | 21.13% | 20.49% |
+| Equal-supported-position fret accuracy | 12.89% | 12.49% | 13.00% | 12.98% |
+| Fret accuracy when GT and prediction are active | 18.79% | 21.86% | 21.80% | 20.88% |
 
-The model chooses its training-modal fret on **60.64%** of active GT frames. Its accuracy exceeds the independence expectation from its own output/GT marginals by **3.53 percentage points**. This shows some alignment beyond those frequency marginals alongside concentrated predictions. It does not establish a causal mechanism or justify selecting another model.
+The fixed final rule selects **`uniform_ce650`** by state F1, then note-onset F1. Only the three step650 finals are eligible; the parent is a dose reference. Weighted CE lowers state F1 by0.01192 and onset F1 by0.01837 versus uniform CE, so this trial does not support adopting the weighting rule. Conditional/macro fret metrics use different denominators and do not override primary selection.
 
-The primary frame-weighted gain is 2.04 percentage points; the control beats that prior on seven clips, ties on two and loses on three. All declared priors remain visible: presentation, unique and available counts, with deterministic majority and analytic distribution views, plus uniform25. The primary source was fixed before examining these results. GT-active conditioning excludes the activity decision, so these are oracle-support diagnostics rather than end-to-end accuracy.
+A **pre-training amendment** handles one training-available but historically unexposed position, string4/fret17:50 available active frames, zero unique supervised frames in the parent history and76 presentations in the fixed new crops. The original proposal would reject it. Before any optimizer update, the existing cap4 was assigned to such available/unexposed positions; labels absent from training retain zero weight and fail if active. No validation result, crop, arm, coefficient or budget changed. The [exact weight/amendment record](../outputs/balance22/class-weights.json) and initial preflight stop are preserved; the original proposal remains byte-identical.
 
-Open the [prior/confusion review](../outputs/prior21/review.html), [findings](../outputs/prior21/findings.md) or [verification record](../outputs/prior21/verification.json). The [tracked Stage 21 snapshot](../experiments/stage21.snapshot.json) preserves 693 artifact/code/input bindings.
-
-## Previous coverage diagnosis
-
-Stage 20 counted the actual supervised exposure and related it to saved errors, with **zero new training updates and zero neural inference calls**. It examined 48 training target caches, the recorded crop schedules and all 36 model/clip validation cases.
-
-| Training history | Available active source frames | Repeated active presentations | Unique supervised string-frame identities |
-| --- | ---: | ---: | ---: |
-| Parent, epochs 1-5 | 174,071 | 242,592 | 127,390 |
-| Each child, epochs 1-10 | 174,071 | 476,406 | 154,681 |
-
-All **64 ground-truth positions** used by validation had already received supervision; the unseen bin has no active frames or reference notes. For `control500` argmax, the 1000+ presentation bin contains 21,386 of 22,219 active GT string-frames. It accounts for **95.81% of active-frame errors**, with an **89.07% within-bin error rate**. The remaining 833 active frames in lower-exposure bins all fail exact-state prediction.
-
-This points toward difficulty predicting supported positions. Repeated frames can still represent few independent examples, and the bin comparison does not establish causation. Each model uses its own history; the children's shared exposure is counted once per history. Pitch-versus-position diagnostics retain their empty validation cohorts rather than inventing error rates.
-
-Open the [coverage review](../outputs/coverage20/review.html), [findings](../outputs/coverage20/findings.md) or [verification record](../outputs/coverage20/verification.json). The [tracked Stage 20 snapshot](../experiments/stage20.snapshot.json) preserves 658 artifact/code/input bindings, including the source experiment receipts and frozen target caches. No new model was selected.
-
-## Latest trained comparison
-
-Stage 19 restored the same 250-update parent into two arms. Each received 250 new updates over five additional sampled-crop epochs, reaching 500 lifetime updates. The stage spent **500 new optimizer updates total**. The one shared parent's 250 historical updates are counted once.
-
-| Reused-development measurement | Original loss / control | Extra conditional-fret loss |
-| --- | ---: | ---: |
-| Argmax exact string/fret frame F1, primary | 0.0828 | 0.0749 |
-| Note-onset F1 | 0.1148 | 0.1136 |
-| Best active fret on reference-active frames | 18.66% | 19.55% |
-| Correct fret when reference and prediction are active | 18.79% | 19.44% |
-
-The auxiliary term improved the targeted fret-choice measurements but lowered the primary frame score and slightly lowered note scores. The declared rule selected **`control500`**. The offline default remains unchanged.
-
-Read the local [findings](../outputs/fret19/findings.md), [interactive review](../outputs/fret19/review.html) or [verification record](../outputs/fret19/verification.json). These files are ignored by Git and are present in the recorded workspace. A compact [tracked verification snapshot](../experiments/stage19.snapshot.json) preserves their hashes.
+Open the [Stage 22 audio review](../outputs/balance22/review.html), [findings](../outputs/balance22/findings.md) or [verification record](../outputs/balance22/verification.json). The [tracked snapshot](../experiments/stage22.snapshot.json) records **1,128 artifact/code/input bindings**.
 
 ## What the evidence supports
 
-- Local, reproducible research workflows on isolated standard-tuning guitar, with notes, string/fret positions and inspectable exports.
-- Controlled comparisons of small acoustic models, decoding choices, supervision and feature representations under limited training budgets.
-- Explicit separation of source estimates, packet availability and measured virtual processing completion where a stage actually measured that clock.
+The project supports local research on isolated standard-tuning guitar, inspectable string/fret notes, controlled acoustic-model comparisons, constrained fingering and rhythm/notation drafts. It does not establish reliable transcription of arbitrary songs or electric-guitar recording conditions.
 
-Recent stages repeatedly use the same twelve progression-2 development recordings. Training uses 48 progression-1 recordings, and players occur across splits. Earlier progression-3 and external-electric results are historical evaluations, not a fresh selection set for another round of tuning. Current results do not establish reliable transcription of arbitrary songs, instruments or electric-guitar recording conditions.
+Recent stages repeatedly use the same twelve progression-2 development recordings and an earlier decoder calibration. Training uses48 progression-1 recordings, and players occur across splits. Stage20 found that all64 validation GT positions had prior supervision; Stage21 found only a small conditional-fret gain over fixed frequency priors. See the [experiment index](../experiments/README.md) for the complete lineage and the [detailed guide](experiment-guide.md) for earlier results.
 
 ## Verification and housekeeping
 
-The latest full test run, on 2026-10-28, passed **633 tests** with one existing dependency deprecation warning, including 27 new Stage 21 tests. See the [Stage 21 test record](../outputs/prior21/test-results.json).
+The latest full suite passed **670 tests**, including37 new Stage22 tests, with one existing dependency deprecation warning. An initial attempt overlapped browser QA and hit CPU allocator exhaustion/CUDA errors on this8GB host. The sequential rerun passed; [both attempts are retained](../outputs/balance22/test-results.json). Verification reruns added no acoustic experiment updates.
 
-Stage 21 independently reconstructed all three saved-model confusions with scalar comparisons and all 21 prior confusions with explicit expected-mass loops. It checked exact CSV values in 900 prior rows, 3,600 class rows, 144 string rows, 288 case rows and 38,400 supported-class confusion rows. Browser checks covered 24 model/predictor views, 576 control states, 264 export links, three exact confusion-JSON downloads and 36 source-case links. Desktop and mobile screenshots were inspected.
+The [numeric audit](../outputs/balance22/audit.json) checks all34 real AdamW counters at650 per child, exact pre-update restoration snapshots, identical final paired RNG streams and independently reconstructed class exposure for epochs11-13:47,469 /43,499 /46,982 active presentations. It reproduces all48 cases, twelve bit-identical parent probability sets, **7,395 exact note/MIDI attacks** and **14,790 events**, without additional neural inference or optimizer updates.
 
-Stage 20's independent audit reconstructed both histories using delayed target arrays and crop masks, then compared them with the main source-range counting algorithm. It reproduced all original frame totals and official note matches, and checked exact values in 2,259 note rows, 300 coverage rows and 900 class-error rows. Its browser checks covered six model/policy views, 420 filter states, 54 export links and six exact JSON downloads; desktop and mobile screenshots were inspected.
+Browser QA checks48 model/clip views,240 export links,48 exact JSON downloads,48 playback-preserving model cycles, completion-gated logs and14,790 three-clock event markers. EOF closures are tagged; active playback survives model switching. Desktop/mobile screenshots were inspected. Processing/audio excludes EOF flush cost while virtual completion includes it. Identical graphs cannot establish a speed benefit from the loss; matched-delay subsets omit misses. No capture-hardware latency was measured.
 
-Stage 19's original run passed 565 tests and records 36 audited model/clip cases, twelve bit-identical parent probability reproductions, exact exports and checks of all 36 browser views. Its original [test report](../outputs/fret19/test-results.json) and [audit](../outputs/fret19/audit.json) remain unchanged.
-
-The full test run verified Stage 20's **658 artifact/code/input bindings** before and after the tests. The final integrity check covers all 21 indexed stages and the Stage 21 snapshot's **693 artifact/code/input bindings**. Historical research artifacts and producers remain byte-identical.
-
-A newly created virtual environment installed **39 packages offline** from the local cache and ran the real offline transcription CLI on CPU. Its 12-second development clip produced 268 timed notes, with matching MIDI/JSON and valid string/fret intervals. Package imports were checked to come from that new environment. This is an environment/export smoke check using local assets and the workspace Python runtime, not an accuracy or clean-machine portability result.
-
-That earlier [housekeeping receipt](../experiments/housekeeping-checks.json) belongs to commit `466f77b`; its helper-source hashes describe that version. The Stage 20 snapshot records the updated checker that also supports diagnosis snapshots while preserving the Stage 19 model selection.
-
-| Housekeeping item | Status |
-| --- | --- |
-| Local Git baseline | Complete: initial commit `895eed6`, branch `main`. |
-| Preserve file bytes across Git checkouts | Complete: `.gitattributes` disables automatic line-ending conversion. |
-| Concise README, current status and experiment index | Complete in this documentation cleanup. |
-| One project-wide verification command | Complete: saved hashes, indexed paths, dependency compatibility and full tests. |
-| Fresh isolated-environment transcription smoke run | Complete: offline install, CPU CLI and MIDI/JSON contract checks. |
-| Stage 20 coverage diagnosis | Complete: zero training/inference, independent counts, exports and browser checks. |
-| Stage 21 training-prior diagnosis | Complete: zero training/inference, scalar reconstructions, full confusions and browser checks. |
-
-Current checks in the existing workspace:
+The full test run verified Stage21's693 bindings before and after tests. The final read-only check covers all22 indexed stages and Stage22's1,128 bindings. Historical research producers and artifacts retain their exact bytes.
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/check_project.py
 ```
 
-The full historical test suite uses local checkpoint/data assets in addition to source and fixtures. The [verification guide](VERIFICATION.md) explains the command's scope, integrity-only mode and separate fresh-environment smoke runner. Stage-specific reproduction commands remain in the [detailed guide](experiment-guide.md). Some old report/audit commands rewrite their output records; the new checker reads their saved evidence directly.
+The [verification guide](VERIFICATION.md) explains the integrity-only mode, local asset requirements and fresh-environment runner. Run browser QA and the full suite separately on this machine. Stage-specific audits/report commands remain in the detailed guide; some regenerate their own evidence, whereas the project checker reads saved evidence directly.
+
+Earlier housekeeping established local Git, byte-preserving attributes, indexed documentation and a fresh isolated-environment CPU transcription smoke check. That check installed39 cached packages offline and produced268 timed notes from12 seconds, with matching MIDI/JSON. It used the workspace Python and local assets; it was not an accuracy or clean-machine portability result. The [housekeeping receipt](../experiments/housekeeping-checks.json) describes commit `466f77b`; its helper hashes belong to that version.
 
 ## Next research step
 
-The [Stage 22 proposal](../outputs/prior21/next-experiment.json) is a matched class-weighting trial capped at **450 new optimizer updates total**: three arms receive 150 updates over three shared sampled-crop epochs. All begin from the same complete saved control500 model/AdamW/AMP/RNG state and end at lifetime step650.
+The [Stage 23 proposal](../outputs/balance22/next-experiment.json) locks all four model identities and the selected `uniform_ce650` checkpoint before evaluating the existing twelve progression-3 recordings. It allows **zero training**, no calibration, no test-driven model reselection and no production promotion.
 
-The arms are original loss, uniform active-only fret CE and the same auxiliary term with bounded inverse-square-root class weights from unique supervised training counts. Weighting is a hypothesis to test, not an established fix. Fixed final state/note scores and conditional fret diagnostics will expose tradeoffs. The trial has not trained, allows no independent-test inference and proposes no production promotion. Independent recordings remain necessary for a later generalization claim.
+Those recordings had earlier historical evaluations. They are held out from this training/development protocol, but are not an untouched independent dataset; players occur across splits. This proposed check cannot establish fresh electric-guitar generalization. It has not run, and Stage22 performed no test inference.
 
 ## Preserving the workspace
 
-Git tracks source, configs, tests, small reference fixtures, documentation and compact experiment records. The ignored `data/`, `models/` and `outputs/` directories need a separate backup to preserve the completed research. The [experiment index](../experiments/README.md) records their local paths.
+Git tracks source, configs, tests, small reference fixtures, documentation and compact records. Ignored `data/`, `models/` and `outputs/` need a separate backup. Historical package/output paths and exact source bytes support archived hashes; do not mass-format or move them during cleanup.
 
-Keep historical stage packages and artifact paths in place: their imports, receipts and hashes support reproducibility. `.gitattributes` preserves existing source bytes; automatic formatting or line-ending rewrites can invalidate archived hashes.
-
-`.cache/python` contains the interpreter used by `.venv` on this workspace. Preserve that runtime. The separate `.venv-tf-check` environment supports the recorded MT3 frontend fixture workflow. Disposable cache or temporary files should be identified individually before any disk cleanup.
+`.cache/python` contains the interpreter used by `.venv`; preserve it. `.venv-tf-check` supports the recorded MT3 frontend fixture workflow. Identify disposable temporary files individually before cleanup. The latest research checkpoint is a causal two-plane `multires17.model.CausalCNNGRU`, separate from the default offline model's CLI.

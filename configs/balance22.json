@@ -1,0 +1,64 @@
+{
+  "stage": 22,
+  "seed": 42,
+  "data_epoch_start": 10,
+  "total_optimizer_update_cap": 450,
+  "proposal": "outputs/prior21/next-experiment.json",
+  "proposal_sha256": "d150e9798b6c39bb5b0db32e9317c0069ee0ab968ed273a3fe183ff111a3b292",
+  "source_verification_sha256": "9c0b4e6b11875a60daba31b5ea7f7c720ef01cd7417aad8d9b3e49354213bed9",
+  "parent_checkpoint": "outputs/fret19/models/control/final.pt",
+  "parent_checkpoint_sha256": "b4a8fa23e1b907c371093e131e2ee8f1ce0d88eb9527e92405dfff8844033d10",
+  "arms": [
+    {
+      "name": "original",
+      "active_fret_ce_coefficient": 0.0,
+      "weighting": "none"
+    },
+    {
+      "name": "uniform_ce",
+      "active_fret_ce_coefficient": 0.5,
+      "weighting": "uniform"
+    },
+    {
+      "name": "balanced_ce",
+      "active_fret_ce_coefficient": 0.5,
+      "weighting": "clipped_inverse_sqrt"
+    }
+  ],
+  "common_target_delay_frames": 13,
+  "common_leading_mask_frames": 26,
+  "training": {
+    "epochs": 3,
+    "max_steps": 150,
+    "samples_per_epoch": 200,
+    "batch_size": 4,
+    "crop_seconds": 2.0,
+    "edge_mask_frames": 26,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "num_workers": 0,
+    "cpu_threads": 4,
+    "mixed_precision": true,
+    "inactive_class_weight": 0.35,
+    "gain_augmentation_log_std": 0.15
+  },
+  "decoder_parameters": {
+    "onset_threshold": 0.7,
+    "activity_threshold": 0.25,
+    "onset_backdate_seconds": 0.0
+  },
+  "validation_packet_ms": 20,
+  "pitch_diagnostics": {
+    "threshold": 0.5,
+    "low_register_midi": [
+      40,
+      51
+    ]
+  },
+  "sanity_reference": "outputs/acoustic10/sanity.json",
+  "selection_rule": "Fixed step650 mean development argmax exact-state F1, then official note-onset F1; exact ties prefer original, then uniform_ce, then balanced_ce. Report conditional/macro fret diagnostics and all tradeoffs. No independent-generalization claim.",
+  "test_inference_allowed": false,
+  "production_promotion": false,
+  "unexposed_available_policy": "fixed_cap4_before_training"
+}
