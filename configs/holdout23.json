@@ -1,0 +1,46 @@
+{
+  "stage": 23,
+  "proposal": "outputs/balance22/next-experiment.json",
+  "proposal_sha256": "3da0048398deb04862be8300937097aedcbcd4f2e7392c1d8c291d7649318961",
+  "source_verification_sha256": "38f66103d68f1f3390c50feb776349ef69ee46d93ceede5a74885e26314e07ee",
+  "locked_selected_arm": "uniform_ce650",
+  "models": {
+    "parent500": {
+      "checkpoint": "outputs/fret19/models/control/final.pt",
+      "sha256": "b4a8fa23e1b907c371093e131e2ee8f1ce0d88eb9527e92405dfff8844033d10"
+    },
+    "original650": {
+      "checkpoint": "outputs/balance22/models/original/final.pt",
+      "sha256": "7990aeeac29d2b9f12bdbb60b6544ebc0f4308e12dbf7af7565365b28f0cb826"
+    },
+    "uniform_ce650": {
+      "checkpoint": "outputs/balance22/models/uniform_ce/final.pt",
+      "sha256": "f40fa7981f090681b8943ceed20cfee6878914db3ce9a92610dac6921adc3529"
+    },
+    "balanced_ce650": {
+      "checkpoint": "outputs/balance22/models/balanced_ce/final.pt",
+      "sha256": "c84201f24cd92f95cfeaf0fae49fde0da8c58140cf97608364f2c28f8e95344b"
+    }
+  },
+  "common_target_delay_frames": 13,
+  "common_leading_mask_frames": 26,
+  "source_frames": 1000,
+  "decoder_parameters": {
+    "onset_threshold": 0.7,
+    "activity_threshold": 0.25,
+    "onset_backdate_seconds": 0.0
+  },
+  "pitch_diagnostics": {
+    "threshold": 0.5,
+    "low_register_midi": [
+      40,
+      51
+    ]
+  },
+  "clip_seconds": 12.0,
+  "packet_ms": 20,
+  "new_optimizer_update_cap": 0,
+  "model_selection_allowed": false,
+  "calibration_search_allowed": false,
+  "production_promotion": false
+}

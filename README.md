@@ -1,9 +1,9 @@
 # Guitar transcription research
 
-Low-compute guitar transcription experiments, completed through **Stage 22**. The default workflow is the offline CNN-GRU. The causal branch, constrained fingering, rhythm/notation and separation experiments are documented with their own controls and limits.
+Low-compute guitar transcription experiments, completed through **Stage 23**. The default workflow is the offline CNN-GRU. The causal branch, constrained fingering, rhythm/notation and separation experiments are documented with their own controls and limits.
 
 - [Current status](docs/STATUS.md): defaults, latest results, limitations and remaining work.
-- [Experiment index](experiments/README.md): all 22 stages, code, configs and local reviews.
+- [Experiment index](experiments/README.md): all 23 stages, code, configs and local reviews.
 - [Detailed experiment guide](docs/experiment-guide.md): recorded commands and findings.
 - [Research plan](research-plan.md): original questions and experiment sequence.
 
@@ -12,14 +12,14 @@ Low-compute guitar transcription experiments, completed through **Stage 22**. Th
 | Item | Status |
 | --- | --- |
 | Default transcription model | Offline CNN-GRU, `outputs/cnn_gru/best-inference.pt`. |
-| Latest completed experiment | Stage 22: matched original, uniform fret CE and class-weighted fret CE continuations. |
+| Latest completed experiment | Stage 23: locked evaluation of four existing models on progression-3 recordings; zero training. |
 | Selected research candidate | Stage 22 `uniform_ce650`; development selection, no default promotion. |
-| Next research step | Proposed Stage 23: locked evaluation on existing progression-3 recordings; zero training. |
-| Last recorded full test run | 670 passed, one existing dependency warning, 2026-10-28. |
+| Next implementation step | Proposed Stage 24: an explicit research inference CLI using the locked model; zero training. |
+| Last recorded full test run | 688 passed, one existing dependency warning, 2026-10-28. |
 
-Stage 22 spent **450 new updates total**, 150 per arm over three matched crop epochs. Uniform fret CE reached development state F1 **0.1203** and note-onset F1 **0.1493**, versus **0.1066 / 0.1445** for continued original loss and **0.1084 / 0.1310** for weighted CE. A recorded training-only amendment assigns the fixed cap4 to one available but previously unexposed position. These reused-development results do not establish independent generalization.
+Stage 23 preserves Stage 22's selected `uniform_ce650` checkpoint. Its test state/note-onset F1 is **0.0578 / 0.0832**, versus **0.0513 / 0.0892** for continued original loss: the state advantage persists, while the onset advantage does not. These existing recordings had historical evaluations and share players across splits. No test-driven reselection, calibration or default promotion occurred.
 
-Open the local [Stage 22 audio review](outputs/balance22/review.html) or [findings](outputs/balance22/findings.md). The [prior diagnosis](outputs/prior21/review.html) and [coverage audit](outputs/coverage20/review.html) retain the preceding evidence. Review assets are local files, ignored by Git.
+Open the local [Stage 23 audio review](outputs/holdout23/review.html) or [findings](outputs/holdout23/findings.md). The [Stage 22 development trial](outputs/balance22/review.html), [prior diagnosis](outputs/prior21/review.html) and [coverage audit](outputs/coverage20/review.html) retain the preceding evidence. Review assets are local files, ignored by Git.
 
 ## Transcribe a local guitar clip
 
@@ -51,7 +51,7 @@ In the recorded workspace:
 .\.venv\Scripts\python.exe scripts/check_project.py
 ```
 
-This checks all 22 indexed stages' paths, the latest snapshot's 1,128 artifact/code/input bindings, checkpoint identities, installed dependencies and the full test suite. Historical evidence stays unchanged; new logs go under `tmp/project-check/`. Run browser QA separately from the full suite on this 8GB host. See [verification instructions](docs/VERIFICATION.md) for the integrity-only mode and separate fresh-environment transcription check.
+This checks all 23 indexed stages' paths, the latest snapshot's 1,418 artifact/code/input bindings, checkpoint identities, installed dependencies and the full test suite. Historical evidence stays unchanged; new logs go under `tmp/project-check/`. Run browser QA separately from the full suite on this 8GB host. See [verification instructions](docs/VERIFICATION.md) for the integrity-only mode and separate fresh-environment transcription check.
 
 ## Repository map
 
@@ -62,7 +62,7 @@ This checks all 22 indexed stages' paths, the latest snapshot's 1,128 artifact/c
 | [configs/](configs/) | Recorded experiment settings. |
 | [tests/](tests/) | Tests and small reference fixtures. |
 | [scripts/](scripts/) | Setup, audit helpers and browser checks. |
-| Stage packages such as [cnn_gru/](cnn_gru/), [streaming/](streaming/) and [balance22/](balance22/) | Preserved implementations and imports for completed experiments. |
+| Stage packages such as [cnn_gru/](cnn_gru/), [streaming/](streaming/) and [holdout23/](holdout23/) | Preserved implementations and imports for completed experiments. |
 | `data/`, `models/`, `outputs/` | Local datasets, weights and results; ignored by Git. |
 | `.venv/`, `.venv-tf-check/`, `.cache/`, `tmp/` | Local environments, runtime files, caches and temporary work. |
 

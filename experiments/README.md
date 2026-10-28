@@ -1,6 +1,6 @@
 # Experiment index
 
-Completed through **Stage 22**. See [current status](../docs/STATUS.md) for the present default and latest result. The [detailed guide](../docs/experiment-guide.md) preserves stage-specific instructions; [index.json](index.json) provides the paths and recorded verification metadata in machine-readable form.
+Completed through **Stage 23**. See [current status](../docs/STATUS.md) for the present default and latest result. The [detailed guide](../docs/experiment-guide.md) preserves stage-specific instructions; [index.json](index.json) provides the paths and recorded verification metadata in machine-readable form.
 
 Review and report links below refer to local, Git-ignored outputs. They work in the recorded workspace after those assets are restored; a source-only checkout does not contain them. A stage's result applies to its stated data, budget and timing scope, not a shared cross-stage leaderboard.
 
@@ -30,10 +30,11 @@ Review and report links below refer to local, Git-ignored outputs. They work in 
 | 20. Supervised-label coverage | All validation GT positions had supervised exposure; 95.8% of control argmax active-frame errors lie in the 1000+ presentation bin. Zero new training/inference. | [Code](../coverage20/) · [Config](../configs/coverage20.json) | [Review](../outputs/coverage20/review.html) · [Report](../outputs/coverage20/report.md) |
 | 21. Training-frequency priors | Control best-active fret accuracy18.66% versus primary majority prior16.62%, with concentrated predictions. Oracle GT-active diagnosis; zero training/inference and no new selection. | [Code](../prior21/) · [Config](../configs/prior21.json) | [Review](../outputs/prior21/review.html) · [Report](../outputs/prior21/report.md) |
 | 22. Matched class weighting | 450 new updates total. Uniform CE selected at state/note F1 0.1203/0.1493; weighting did not improve it. One recorded training-only zero-support amendment. | [Code](../balance22/) · [Config](../configs/balance22.json) | [Review](../outputs/balance22/review.html) · [Report](../outputs/balance22/report.md) |
+| 23. Locked progression-3 evaluation | Zero training. Selected uniform CE reaches test state/onset F1 0.0578/0.0832 versus original loss 0.0513/0.0892. Development selection preserved; historical test data and shared players. | [Code](../holdout23/) · [Config](../configs/holdout23.json) | [Review](../outputs/holdout23/review.html) · [Report](../outputs/holdout23/report.md) |
 
 ## Proposed next stage
 
-**Stage 23: locked progression-3 evaluation — not executed.** Lock all four Stage22 model identities and the selected uniform-CE checkpoint before scoring the existing twelve progression-3 recordings. Zero training, no calibration or test-driven reselection. These recordings had historical evaluations and are not a fresh independent dataset. See the [proposal](../outputs/balance22/next-experiment.json) and [current-status explanation](../docs/STATUS.md#next-research-step).
+**Stage 24: explicit research inference CLI — not implemented.** Use the locked uniform-CE checkpoint and frozen frontend/decoder to export timed JSON/CSV/MIDI and a simple string/fret text view from local audio. Preserve the offline default and require research opt-in. Zero training, no calibration, reselection, meter-prediction claim or model-quality promotion. Engineering parity uses development audio and synthetic boundaries. See the [proposal](../outputs/holdout23/next-experiment.json) and [current-status explanation](../docs/STATUS.md#next-research-step).
 
 ## Verification and backups
 
@@ -43,7 +44,9 @@ Review and report links below refer to local, Git-ignored outputs. They work in 
 
 [stage21.snapshot.json](stage21.snapshot.json) is byte-identical to the [Stage 21 verification record](../outputs/prior21/verification.json). Its 693 bindings preserve the prior/confusion diagnosis and the complete verified Stage 20 lineage. Stage21 artifact paths use `outputs/prior21/`; code/input paths use the project root.
 
-[stage22.snapshot.json](stage22.snapshot.json) is the latest tracked snapshot, byte-identical to the [Stage 22 verification](../outputs/balance22/verification.json). Its1,128 bindings preserve all three continuations, matched exposure, the pre-training cap4 fallback, numeric/browser/test evidence and the prior lineage. Artifact paths use `outputs/balance22/`; code/input paths use the project root. The registry's `model_record` now points to the Stage22 run, with the selected `uniform_ce650` checkpoint.
+[stage22.snapshot.json](stage22.snapshot.json) is byte-identical to the [Stage 22 verification](../outputs/balance22/verification.json). Its 1,128 bindings preserve all three continuations, matched exposure, the pre-training cap4 fallback, numeric/browser/test evidence and the prior lineage. Artifact paths use `outputs/balance22/`; code/input paths use the project root.
+
+[stage23.snapshot.json](stage23.snapshot.json) is the latest tracked snapshot, byte-identical to the [Stage 23 verification](../outputs/holdout23/verification.json). Its 1,418 bindings preserve the pre-test lock, copied development selection, 48 scored replays plus four warmups, twelve reproduced target caches, four unchanged checkpoints, numeric/browser/test evidence and prior lineage. Artifact paths use `outputs/holdout23/`; code/input paths use the project root. The registry's `model_record` remains the hash-bound Stage 22 development run, with the selected `uniform_ce650` checkpoint; Stage 23 has no new selected arm.
 
 The registry's verification paths point to each stage's existing records where present. A missing record is represented by `null`, not an implied failure or an invented successful audit. The first eight stages use their original reports and run records; this index does not claim that every historical pipeline has been rerun during housekeeping.
 

@@ -1,6 +1,6 @@
 # Detailed experiment guide
 
-This guide preserves the commands, controls and findings recorded through Stage 19. Use [current status](STATUS.md) for the present default and remaining work, or the [experiment index](../experiments/README.md) to find a stage.
+This guide preserves the commands, controls and findings recorded through Stage 23. Use [current status](STATUS.md) for the present default and remaining work, or the [experiment index](../experiments/README.md) to find a stage.
 
 The opening baseline sections below describe **Stage 1**. Each later section describes its own completed experiment, budget and data scope. A next-step proposal in an earlier section records what was planned then; a later stage may already have executed it. Reused validation results are development evidence, and timing scopes differ across stages.
 
@@ -799,6 +799,40 @@ Open the [audio review](../outputs/balance22/review.html), [findings](../outputs
 The original `python -m balance22 run --device cuda` is single-use: an existing protocol rejects repeat training. `evaluate` permits validation recovery before final verification without optimizer updates; verified roots reject fresh evaluation. The `report` command is pre-verification rendering work and rewrites the presentation receipt, so use the project checker for routine integrity checks on completed evidence. The original CUDA scaler/RNG state cannot be silently discarded on CPU. Run browser QA separately from the full test suite on this8GB host.
 
 Stage23 is proposed, not executed: freeze all four checkpoint identities and the selected uniform-CE final before evaluating the existing progression-3 recordings. It allows zero training, no calibration and no test-driven reselection. Those recordings had earlier historical evaluations and players overlap across splits, so they are not an untouched independent or electric-guitar dataset. Stage22 made no test inference.
+
+## Stage 23: locked progression-3 evaluation
+
+Stage 23 follows the saved Stage 22 proposal with **zero training**, optimizer instantiations, normalization updates or calibration. Before any test audio/annotation read, it locks the four checkpoint hashes, fixed scoring/decoder settings, checkpoint normalization and an exact byte-copy of Stage 22's development selection. `uniform_ce650` remains selected regardless of test scores; no new model is selected or promoted.
+
+There are twelve existing progression-3 GuitarSet recordings, disjoint by ID from the 48 progression-1 training and twelve progression-2 development recordings. All six players occur across splits, and these test recordings had earlier historical evaluations. This check cannot establish fresh independent-player or electric-guitar generalization. The original waveforms, annotations and existing target caches are hash-bound; all twelve caches match the frozen right-edge target builder in shape, dtype and array bytes.
+
+| Locked model | Development state F1 | Test state F1 | Development note-onset F1 | Test note-onset F1 |
+| --- | ---: | ---: | ---: | ---: |
+| Parent500 | 0.0828 | 0.0291 | 0.1148 | 0.0724 |
+| Original loss650 | 0.1066 | 0.0513 | 0.1445 | 0.0892 |
+| Uniform CE650, selected on development | 0.1203 | 0.0578 | 0.1493 | 0.0832 |
+| Weighted CE650 | 0.1084 | 0.0528 | 0.1310 | 0.0785 |
+
+All F1 values average clips within their split. Uniform CE changes test state F1 by **+0.00659** and onset F1 by **-0.00601** versus original loss: the state advantage persists, but the onset advantage does not. Its development-to-test state F1 falls from 0.1203 to 0.0578 and onset F1 from 0.1493 to 0.0832. Different musical content and supports prevent attributing this decline to a single cause. Conditional fret scores remain diagnostic and do not override the copied development selection.
+
+All four models use the same 931,361-parameter causal two-plane graph and duplicated past-only 128 ms STFT frontend with one physical FFT. Each retains its saved normalization. Source targets0:1000 align with model predictions13:1013; the first26 source frames and per-string conflicts are masked. Official note scoring includes reference onsets in [0,10), including early notes excluded from frame scoring. Twelve seconds of observed audio leave two seconds of release context. Onset0.7/activity0.25, four stable state frames, zero additional backdate and 130 ms global source correction remain fixed; onset peaks only retrigger the same fret.
+
+The run performs **48 scored twelve-second PCM replays plus four one-second test-audio warmups**. The four checkpoint files retain their exact hashes. The audit reconstructs saved-probability source notes/events, frame/head and official note/string scores, WAV/JSON/CSV/MIDI exports and aggregate contrasts with no additional neural inference. It verifies **7,181 exact note/MIDI attacks** and **14,362 events**.
+
+**688 tests pass**, including 18 new Stage 23 tests, with one existing dependency deprecation warning. The full project check verifies Stage 22's 1,128 bindings before and after tests. Browser QA runs separately and checks 48 model/clip views, 240 exports, 48 exact JSON downloads, 48 playback-preserving model cycles, completion-gated logs, 14,362 three-clock event markers, 136 EOF tags and active playback switching. Desktop/mobile screenshots were inspected. A template substitution error found by the browser was repaired before freezing, without changing numeric results.
+
+Processing/audio includes packet feature/model/decoder work and probability recording, excludes EOF flush processing, and virtual completion includes flush cost. Matched-note completion delays omit misses and use different subsets. Identical graphs do not establish a speed gain, and no capture-hardware latency is measured.
+
+Open the [audio review](../outputs/holdout23/review.html), [findings](../outputs/holdout23/findings.md) or [verification](../outputs/holdout23/verification.json). The [tracked snapshot](../experiments/stage23.snapshot.json) preserves 1,418 artifact/code/input bindings. The registry retains the Stage 22 development model record and selected checkpoint.
+
+```powershell
+.\.venv\Scripts\python.exe scripts/verify_holdout23.py
+.\.venv\Scripts\python.exe scripts/check_project.py --integrity-only
+```
+
+The original `python -m holdout23 run --device cuda` is single-use: an existing protocol rejects repeat inference. The `audit` command reconstructs cached results without neural inference; it writes its own audit receipt, so use the read-only project checker for routine completed-evidence checks. `report` is pre-verification work and rejects regeneration after verification. Keep tests and browser QA sequential on this 8 GB host.
+
+Stage 24 is proposed, not implemented: add an explicit research inference CLI using the locked uniform-CE checkpoint and exact frozen PCM/frontend/decoder behavior. It would export source-timed JSON/CSV/MIDI and a simple string/fret text view while retaining the existing offline default. Zero training, no calibration, reselection, meter-prediction claim or model-quality promotion is allowed. Engineering parity uses an existing development excerpt and synthetic boundary fixtures; progression-3 scores must not tune the implementation.
 
 ## Sources
 

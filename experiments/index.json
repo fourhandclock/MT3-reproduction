@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "updated": "2026-10-28",
-  "completed_through": 22,
+  "completed_through": 23,
   "local_artifacts_in_git": false,
   "default": {
     "module": "cnn_gru",
@@ -17,13 +17,13 @@
     "scope": "Fixed final development state F1 then note F1; no default promotion."
   },
   "latest_snapshot": {
-    "stage": 22,
-    "path": "experiments/stage22.snapshot.json",
-    "sha256": "38f66103d68f1f3390c50feb776349ef69ee46d93ceede5a74885e26314e07ee",
-    "artifact_root": "outputs/balance22",
+    "stage": 23,
+    "path": "experiments/stage23.snapshot.json",
+    "sha256": "ed79f5d4152c4ae6de5e7211153a8c4710a3ebc3122bdd0456cce61761944703",
+    "artifact_root": "outputs/holdout23",
     "code_root": ".",
     "model_record": "outputs/balance22/validation/run.json",
-    "binding_count": 1128
+    "binding_count": 1418
   },
   "stages": [
     {
@@ -289,16 +289,27 @@
       "verification": "outputs/balance22/verification.json",
       "recorded_new_optimizer_updates": 450,
       "recorded_selected_arm": "uniform_ce650"
+    },
+    {
+      "stage": 23,
+      "status": "completed",
+      "module": "holdout23",
+      "config": "configs/holdout23.json",
+      "output_root": "outputs/holdout23",
+      "review": "outputs/holdout23/review.html",
+      "report": "outputs/holdout23/report.md",
+      "verification": "outputs/holdout23/verification.json",
+      "recorded_new_optimizer_updates": 0,
+      "recorded_selected_arm": null
     }
   ],
   "planned": [
     {
-      "stage": 23,
-      "status": "proposed_not_evaluated",
-      "kind": "locked_progression3_evaluation",
-      "proposal": "outputs/balance22/next-experiment.json",
+      "stage": 24,
+      "status": "proposed_not_implemented",
+      "kind": "explicit_research_inference_cli",
+      "proposal": "outputs/holdout23/next-experiment.json",
       "new_optimizer_updates": 0,
-      "test_inference_allowed": true,
       "model_selection_allowed": false
     }
   ]

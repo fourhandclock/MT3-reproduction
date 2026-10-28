@@ -14,10 +14,10 @@ From the project root:
 
 The command checks:
 
-- Source/config/report/review paths for all 22 indexed stages.
+- Source/config/report/review paths for all 23 indexed stages.
 - The latest tracked snapshot's SHA256 and its exact-byte identity with the
   original local verification record.
-- All 1,128 artifact/code/input bindings in the Stage 22 snapshot, the default checkpoint and
+- All 1,418 artifact/code/input bindings in the Stage 23 snapshot, the default checkpoint and
   all four checkpoints referenced by the hash-bound Stage 22 run record.
 - Agreement between the indexed research selection and the saved run. A later
   diagnosis can preserve an earlier trained-model selection; its referenced
@@ -37,14 +37,23 @@ For just the path/hash checks, without importing ML packages or running tests:
 
 The shorter mode is labeled in its report. It does not imply that tests or
 dependencies passed. A source-only checkout needs the ignored assets restored
-from backup for either mode. The 1,128 bindings cover the latest snapshot, not every
-file ever produced in all 22 stages. Existing historical audit/browser receipts
+from backup for either mode. The 1,418 bindings cover the latest snapshot, not every
+file ever produced in all 23 stages. Existing historical audit/browser receipts
 are checked as saved evidence; this command does not rerun the browser.
 
 On this 8GB host, run headless-browser QA separately from the full test suite.
 Stage 22's concurrent attempt hit CPU allocator exhaustion/CUDA errors; the
 standalone rerun passed all 670 tests. Both attempts are retained in that stage's
 test evidence. Repeating verification adds no acoustic experiment training.
+
+Stage 23 passed all 688 tests, including 18 new tests, with one existing dependency
+deprecation warning. Its test run checked Stage 22's 1,128 bindings before and
+afterward. The final integrity-only check uses the new Stage 23 snapshot. Browser
+QA then checked 48 views and 14,362 event markers; desktop/mobile screenshots were
+inspected. The latest snapshot preserves Stage 22's development selection rather
+than selecting from test scores. Stage 23 made 48 scored file replays and four
+test-audio warmups, with no training or checkpoint changes. Its report command
+rejects regeneration after verification; use the project checker for routine checks.
 
 ## Fresh isolated-environment transcription
 
